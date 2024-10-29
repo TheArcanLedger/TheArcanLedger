@@ -25,7 +25,7 @@ body {
     padding: 20px;
     border: 1px solid #FFD700; /* Gold border */
     border-radius: 8px;
-    background-color: rgba(17, 17, 17, 0.8); /* Slightly transparent black for contrast */
+    background-color: rgba(17, 17, 17, 0.8); /* Slightly transparent for contrast */
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Gold shadow for effect */
 }
 
@@ -37,7 +37,7 @@ h1 {
 }
 
 #output {
-    background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent black for output */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
     color: #FFD700;
     padding: 10px;
     min-height: 200px;
@@ -52,7 +52,7 @@ input[type="text"] {
     padding: 10px;
     font-size: 1em;
     color: #FFD700;
-    background-color: rgba(34, 34, 34, 0.8); /* Slightly transparent dark background for input */
+    background-color: rgba(34, 34, 34, 0.9); /* Dark transparent background for input */
     border: 1px solid #FFD700;
     border-radius: 4px;
 }
