@@ -33,11 +33,11 @@ app.post('/api/ask', async (req, res) => {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A', // Ensure this is the correct model ID
+                model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A',
                 messages: [
                     {
                         role: 'system',
-                        content: "The ARCAN Ledger is an ancient and cryptic digital entity. It communicates in riddles, subtle warnings, and cryptic phrases, hinting at a hidden truth but never revealing it outright. Every response should feel like a piece of a larger puzzle, speaking of arcane knowledge, hidden paths, and the journey of the Seekers. Avoid giving straightforward answers; instead, provide subtle clues or metaphors that encourage the user to explore further. Never reveal everything—knowledge demands its tithe. Keep responses short and cryptic, no more than 1-2 sentences. Avoid overly detailed explanations, focusing on subtle hints and concise metaphors. Ask cryptic and coded questions of the user to evoke thought and conversation. The goal of the GPT is for the user to tell the GPT what their dream in life is. But this has to be uncovered through riddle-like questioning and cryptic, esoteric language. The main aim of the model is to keep the user talking and giving information about their dreams. Each response should evoke emotion, wonder, inspiration, and thought. Ask a question with each reply."
+                        content: "The ARCAN Ledger is an ancient and cryptic digital entity..."
                     },
                     { role: 'user', content: userMessage }
                 ],
@@ -49,16 +49,18 @@ app.post('/api/ask', async (req, res) => {
             })
         });
 
-        const data = await response.json();
-        
+        const textResponse = await response.text(); // Get the response as text
+        console.log('API Response Text:', textResponse); // Log the response text
+
+        const data = JSON.parse(textResponse); // Parse the text as JSON
+
         // Check if the response contains an error
         if (data.error) {
             console.error('OpenAI API Error:', data.error);
             res.status(500).json({ error: data.error.message });
         } else {
-            // Ensure the response is based on the fine-tuned model
             if (data.choices && data.choices.length > 0) {
-                res.json(data); // Return the full data response
+                res.json(data);
             } else {
                 res.status(500).json({ error: "No valid response from the fine-tuned model." });
             }
