@@ -33,7 +33,7 @@ app.post('/api/ask', async (req, res) => {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A',
+                model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A', // Ensure this is the correct model ID
                 messages: [{ role: 'user', content: userMessage }],
                 max_tokens: 100
             })
@@ -41,11 +41,17 @@ app.post('/api/ask', async (req, res) => {
 
         const data = await response.json();
         
+        // Check if the response contains an error
         if (data.error) {
             console.error('OpenAI API Error:', data.error);
             res.status(500).json({ error: data.error.message });
         } else {
-            res.json(data);
+            // Ensure the response is based on the fine-tuned model
+            if (data.choices && data.choices.length > 0) {
+                res.json(data); // Return the full data response
+            } else {
+                res.status(500).json({ error: "No valid response from the fine-tuned model." });
+            }
         }
     } catch (error) {
         console.error('Fetch Error:', error);
