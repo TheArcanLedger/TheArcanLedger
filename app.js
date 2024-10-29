@@ -1,8 +1,17 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+// Define __dirname in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables
 dotenv.config({ path: '.env' });
+
+console.log("Loaded API Key:", process.env.OPENAI_API_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,8 +19,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON
 app.use(express.json());
 
-// Serve static files from the current directory
-app.use(express.static(__dirname));
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname)));
 
 // API endpoint to handle requests from the frontend
 app.post('/api/ask', async (req, res) => {
@@ -31,13 +40,15 @@ app.post('/api/ask', async (req, res) => {
         });
 
         const data = await response.json();
-
+        
         if (data.error) {
+            console.error('OpenAI API Error:', data.error);
             res.status(500).json({ error: data.error.message });
         } else {
             res.json(data);
         }
     } catch (error) {
+        console.error('Fetch Error:', error);
         res.status(500).send('Server Error');
     }
 });
