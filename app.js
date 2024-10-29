@@ -51,3 +51,5 @@ app.listen(PORT, () => {
 
 // Debugging line to verify API Key (you can remove this in production)
 console.log("API Key:", process.env.OPENAI_API_KEY);
+
+app.use(express.static(__dirname + '/index'));
