@@ -1,9 +1,15 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Load environment variables from the .env file in the .gitignore folder
-dotenv.config({ path: './.gitignore/.env' });
+// Define __dirname for ES module compatibility
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables from the .env file
+dotenv.config({ path: '.env' });
 
 console.log("Loaded API Key:", process.env.OPENAI_API_KEY);
 
@@ -12,6 +18,9 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Serve static files (this should be before defining routes)
+app.use(express.static(path.join(__dirname)));
 
 // API endpoint to handle requests from the frontend
 app.post('/api/ask', async (req, res) => {
@@ -45,11 +54,10 @@ app.post('/api/ask', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
 // Debugging line to verify API Key (you can remove this in production)
 console.log("API Key:", process.env.OPENAI_API_KEY);
-
-app.use(express.static(__dirname + '/index'));
