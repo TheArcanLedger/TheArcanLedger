@@ -19,8 +19,8 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON
 app.use(express.json());
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname)));
+// Serve static files from the current directory (where index.html and styles.css are located)
+app.use(express.static(__dirname));
 
 // API endpoint to handle requests from the frontend
 app.post('/api/ask', async (req, res) => {
@@ -53,6 +53,7 @@ app.post('/api/ask', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
