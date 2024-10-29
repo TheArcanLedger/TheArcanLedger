@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="terminal">
-        <div id="output" class="output"></div>
-        <input type="text" id="input" class="input" placeholder="Type your message here..." autofocus>
+    <div class="container">
+        <form id="input-form">
+            <input type="text" id="user-input" placeholder="What is the arcane ledger?" required>
+            <button type="submit">Ask</button>
+        </form>
+        <div id="output"></div>
     </div>
-
     <script src="frontend.js"></script>
 </body>
 </html>
-
