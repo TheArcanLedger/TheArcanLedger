@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url('Images/The Arcan Ledger (1).png'); /* Change this to your image path */
+    background-image: url('./Images/The Arcan Ledger.png'); /* Background for desktop */
     background-size: cover; /* This makes the image cover the entire background */
     background-position: center; /* This centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -17,6 +17,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    body {
+        background-image: url('./Images/The Arcan Ledger Mobile.png'); /* Change this to your mobile image path */
+        background-size: cover; /* This makes the image cover the entire background */
+        background-position: center; /* This centers the image */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
+        height: auto; /* Allows the height to adjust based on content */
+    }
 }
 
 .container {
