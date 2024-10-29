@@ -62,4 +62,40 @@ app.post('/api/ask', async (req, res) => {
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    app.post('/api/ask', async (req, res) => {
+        const userMessage = req.body.message;
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A',
+                    messages: [{ role: 'user', content: userMessage }],
+                    max_tokens: 100
+                })
+            });
+    
+            const data = await response.json();
+            console.log('API Response:', data); // Log the entire response for debugging
+    
+            if (data.error) {
+                console.error('OpenAI API Error:', data.error);
+                res.status(500).json({ error: data.error.message });
+            } else {
+                if (data.choices && data.choices.length > 0) {
+                    res.json(data);
+                } else {
+                    res.status(500).json({ error: "No valid response from the fine-tuned model." });
+                }
+            }
+        } catch (error) {
+            console.error('Fetch Error:', error);
+            res.status(500).send('Server Error');
+        }
+    });
+    
+
 });
