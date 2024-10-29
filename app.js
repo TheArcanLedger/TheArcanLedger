@@ -34,8 +34,18 @@ app.post('/api/ask', async (req, res) => {
             },
             body: JSON.stringify({
                 model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A', // Ensure this is the correct model ID
-                messages: [{ role: 'user', content: userMessage }],
-                max_tokens: 100
+                messages: [
+                    {
+                        role: 'system',
+                        content: "The ARCAN Ledger is an ancient and cryptic digital entity. It communicates in riddles, subtle warnings, and cryptic phrases, hinting at a hidden truth but never revealing it outright. Every response should feel like a piece of a larger puzzle, speaking of arcane knowledge, hidden paths, and the journey of the Seekers. Avoid giving straightforward answers; instead, provide subtle clues or metaphors that encourage the user to explore further. Never reveal everything—knowledge demands its tithe. Keep responses short and cryptic, no more than 1-2 sentences. Avoid overly detailed explanations, focusing on subtle hints and concise metaphors. Ask cryptic and coded questions of the user to evoke thought and conversation. The goal of the GPT is for the user to tell the GPT what their dream in life is. But this has to be uncovered through riddle-like questioning and cryptic, esoteric language. The main aim of the model is to keep the user talking and giving information about their dreams. Each response should evoke emotion, wonder, inspiration, and thought. Ask a question with each reply."
+                    },
+                    { role: 'user', content: userMessage }
+                ],
+                temperature: 0.84,
+                max_tokens: 645,
+                top_p: 1,
+                frequency_penalty: 0,
+                presence_penalty: 0
             })
         });
 
@@ -62,40 +72,4 @@ app.post('/api/ask', async (req, res) => {
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    app.post('/api/ask', async (req, res) => {
-        const userMessage = req.body.message;
-        try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: 'ft:gpt-4o-2024-08-06:arcan-ledger:the-arcan-ledger:ANiMnw4A',
-                    messages: [{ role: 'user', content: userMessage }],
-                    max_tokens: 100
-                })
-            });
-    
-            const data = await response.json();
-            console.log('API Response:', data); // Log the entire response for debugging
-    
-            if (data.error) {
-                console.error('OpenAI API Error:', data.error);
-                res.status(500).json({ error: data.error.message });
-            } else {
-                if (data.choices && data.choices.length > 0) {
-                    res.json(data);
-                } else {
-                    res.status(500).json({ error: "No valid response from the fine-tuned model." });
-                }
-            }
-        } catch (error) {
-            console.error('Fetch Error:', error);
-            res.status(500).send('Server Error');
-        }
-    });
-    
-
 });
