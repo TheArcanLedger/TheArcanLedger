@@ -1,0 +1,71 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000; /* Black background */
+    color: #FFD700; /* Gold text color */
+    font-family: 'Courier New', Courier, monospace; /* Terminal-style font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    padding: 20px;
+    border: 1px solid #FFD700; /* Gold border */
+    border-radius: 8px;
+    background-color: #111; /* Slightly lighter black for contrast */
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Gold shadow for effect */
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #FFD700;
+    text-align: center;
+}
+
+#output {
+    background-color: #000;
+    color: #FFD700;
+    padding: 10px;
+    min-height: 200px;
+    border: 1px solid #FFD700;
+    border-radius: 4px;
+    margin-top: 20px;
+    overflow-y: auto;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    color: #FFD700;
+    background-color: #222; /* Dark background for input */
+    border: 1px solid #FFD700;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #000;
+    background-color: #FFD700; /* Gold background for button */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #daa520; /* Darker gold on hover */
+}
