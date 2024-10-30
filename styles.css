@@ -6,14 +6,14 @@
 }
 
 body {
-    background-image: url('/Images/The Arcan Ledger (1).png'); /* Path to your background image */
-    background-size: cover; /* This makes the image cover the entire background */
-    background-position: center; /* This centers the image */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    height: 100vh; /* Ensures the body takes up the full viewport height */
-    margin: 0; /* Removes default margin */
-    color: #FFD700; /* Gold text color */
-    font-family: 'Courier New', Courier, monospace; /* Terminal-style font */
+    background-image: url('/Images/The Arcan Ledger (1).png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    color: #FFD700;
+    font-family: 'VT323', monospace; /* Retro terminal-style font */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,10 +23,10 @@ body {
     width: 80%;
     max-width: 800px;
     padding: 20px;
-    border: 1px solid #FFD700; /* Gold border */
+    border: 1px solid #FFD700;
     border-radius: 8px;
-    background-color: rgba(17, 17, 17, 0.8); /* Slightly transparent for contrast */
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Gold shadow for effect */
+    background-color: rgba(17, 17, 17, 0.8);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 h1 {
@@ -34,10 +34,11 @@ h1 {
     margin-bottom: 20px;
     color: #FFD700;
     text-align: center;
+    font-family: 'VT323', monospace; /* Consistent terminal font for headings */
 }
 
 #output {
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.7);
     color: #FFD700;
     padding: 10px;
     min-height: 200px;
@@ -45,6 +46,7 @@ h1 {
     border-radius: 4px;
     margin-top: 20px;
     overflow-y: auto;
+    font-family: 'VT323', monospace; /* Retro font for output text */
 }
 
 input[type="text"] {
@@ -52,9 +54,10 @@ input[type="text"] {
     padding: 10px;
     font-size: 1em;
     color: #FFD700;
-    background-color: rgba(34, 34, 34, 0.9); /* Dark transparent background for input */
+    background-color: rgba(34, 34, 34, 0.9);
     border: 1px solid #FFD700;
     border-radius: 4px;
+    font-family: 'VT323', monospace; /* Terminal font for input */
 }
 
 button {
@@ -64,24 +67,23 @@ button {
     font-size: 1em;
     font-weight: bold;
     color: #000;
-    background-color: #FFD700; /* Gold background for button */
+    background-color: #FFD700;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-family: 'VT323', monospace; /* Consistent font for button text */
 }
 
 button:hover {
-    background-color: #daa520; /* Darker gold on hover */
+    background-color: #daa520;
 }
 
 /* Mobile styles */
 @media (max-width: 768px) {
     body {
-        background-image: url('/Images/The Arcan Ledger Mobile.png'); /* Path for mobile background */
+        background-image: url('/Images/The Arcan Ledger Mobile.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        margin: 0; /* Removes default margin */
-        height: auto; /* Allows height to be adjusted as per content */
-    }
-}
+        margin: 0;
+        height:
