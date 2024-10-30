@@ -16,15 +16,8 @@ cursor.style.animation = "blink 1s steps(1) infinite";
 responseContainer.appendChild(cursor);
 
 // Stop button to halt response
-const stopButton = document.createElement("button");
-stopButton.textContent = "Stop";
+const stopButton = document.getElementById("stop-button");
 stopButton.style.display = "none";
-stopButton.id = "stop-button";
-stopButton.className = "button"; // Add styling class for consistency
-
-// Append stop button to the same container as the input field and "Seek Knowledge" button
-const inputContainer = document.querySelector(".input-container");
-inputContainer.appendChild(stopButton);
 
 let typingInterval; // For typing effect
 let isTyping = false;
