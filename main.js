@@ -1,28 +1,40 @@
 const responseContainer = document.getElementById("response");
 
-// Typing function to reveal text character-by-character
 function typeText(text) {
-    responseContainer.textContent = ""; // Clear any previous text
+    responseContainer.textContent = ""; // Clear previous text
     let index = 0;
 
     function typeCharacter() {
         if (index < text.length) {
             responseContainer.textContent += text.charAt(index);
             index++;
-            setTimeout(typeCharacter, 50); // Adjust typing speed by changing 50ms delay
+            setTimeout(typeCharacter, 50); // Adjust typing speed here
         }
     }
 
     typeCharacter();
 }
 
-// Send message function to simulate sending the user’s input and receiving a response
+// Function to send the user's message to the backend
 function sendMessage() {
     const userInput = document.getElementById("user-input").value;
 
-    // Simulate a response for demonstration purposes
-    const responseText = "> ARCΛN::signal() ⧗ Seekers, the true path is yet to be unveiled. No official CA exists. Patience is the first test. Will you wait?";
-    
-    // Start the typing effect with the response text
-    typeText(responseText);
+    // Send the user's input to the backend via POST request
+    fetch('/api/ask', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: userInput })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Get the response text from OpenAI and start typing it
+        const responseText = data.choices[0].message.content;
+        typeText(responseText);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        typeText("There was an error retrieving the response. Please try again.");
+    });
 }

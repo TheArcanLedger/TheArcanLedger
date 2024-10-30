@@ -68,11 +68,13 @@ h1 {
     color: #FFD700;
     padding: 10px;
     min-height: 200px;
-    width: 100%;
     border: 1px solid #FFD700;
     border-radius: 4px;
     margin-top: 20px;
-    overflow-y: auto;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Disable horizontal scrolling */
+    word-wrap: break-word; /* Wrap long words */
+    white-space: pre-wrap; /* Ensure text wraps within the container */
 }
 
 input[type="text"] {
