@@ -41,13 +41,14 @@ body {
     padding: 10px;
     border: 1px solid #FFD700;
     border-radius: 4px;
-    overflow-y: auto;
-    overflow-wrap: break-word; /* Break words to keep them within the box */
-    word-wrap: break-word;      /* Word wrap to ensure text breaks at the end of each line */
-    white-space: pre-wrap;      /* Preserve whitespace and allow line wrapping */
+    overflow-y: auto;         /* Allow vertical scrolling if needed */
+    overflow-x: hidden;       /* Prevent horizontal scrolling */
+    word-wrap: break-word;    /* Ensure text wraps within the container */
+    white-space: pre-wrap;    /* Preserve spaces and allow text wrapping */
     display: flex;
     align-items: flex-start;
     position: relative;
+    flex-wrap: wrap;          /* Allow text to wrap onto new lines */
 }
 
 input[type="text"] {
