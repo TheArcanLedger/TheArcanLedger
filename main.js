@@ -1,7 +1,7 @@
 // Get elements from the HTML
 const responseContainer = document.getElementById("response");
 const userInput = document.getElementById("user-input");
-const seekButton = document.getElementById("seek-button"); 
+const seekButton = document.getElementById("seek-button");
 
 // Create a blinking cursor element
 const cursor = document.createElement("span");
@@ -10,7 +10,7 @@ cursor.style.width = "8px";
 cursor.style.height = "8px";
 cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
 cursor.style.marginLeft = "2px";
-cursor.style.verticalAlign = "middle"; 
+cursor.style.verticalAlign = "middle";
 cursor.style.animation = "blink 1s steps(1) infinite";
 
 // Append the cursor to the response container immediately
@@ -23,11 +23,12 @@ function typeText(text) {
 
     let index = 0;
 
-    // Function to type each character and keep cursor at the end
+    // Function to type each character without using eval or unsafe string methods
     function typeCharacter() {
         if (index < text.length) {
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
+            // Use function reference instead of string
             setTimeout(typeCharacter, 50); // Adjust typing speed here
         }
     }
@@ -39,7 +40,7 @@ function typeText(text) {
 function sendMessage() {
     const message = userInput.value;
 
-    // Check if input is empty, prevent sending an empty message
+    // Check if input is empty to prevent sending an empty message
     if (!message.trim()) return;
 
     // Clear the input field
