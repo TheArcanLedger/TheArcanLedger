@@ -3,9 +3,6 @@ const userInput = document.getElementById("user-input");
 const seekButton = document.getElementById("seek-button");
 const stopButton = document.getElementById("stop-button");
 
-let typingInterval; // For typing effect
-let isTyping = false;
-
 // Create a blinking cursor element
 const cursor = document.createElement("span");
 cursor.style.display = "inline-block";
@@ -16,13 +13,17 @@ cursor.style.marginLeft = "2px";
 cursor.style.verticalAlign = "middle";
 cursor.style.animation = "blink 1s steps(1) infinite";
 
-// Append the cursor to the response container immediately on page load
+// Append the cursor to the response container on page load
 responseContainer.appendChild(cursor);
 
-// Typing effect function with stop functionality
+let typingInterval; // For typing effect
+let isTyping = false;
+
+// Typing effect function
 function typeText(text) {
     responseContainer.innerHTML = ""; // Clear previous text
     responseContainer.appendChild(cursor); // Ensure the cursor is appended
+
     let index = 0;
     isTyping = true;
     stopButton.style.display = "inline-block"; // Show stop button
@@ -76,14 +77,12 @@ function sendMessage() {
 }
 
 // Event listener for the "Seek Knowledge" button
-seekButton.addEventListener("click", () => {
-    sendMessage();
-});
+seekButton.addEventListener("click", sendMessage);
 
 // Allow pressing Enter to trigger sendMessage function
 userInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-        event.preventDefault(); // Prevent form submission if any
+        event.preventDefault(); // Prevent form submission
         sendMessage();
     }
 });
