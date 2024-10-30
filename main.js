@@ -12,7 +12,7 @@ cursor.style.backgroundColor = "#FFD700";
 cursor.style.marginLeft = "2px";
 cursor.style.verticalAlign = "middle";
 cursor.style.animation = "blink 1s steps(1) infinite";
-cursor.classList.add("blinking-cursor"); // Optional class for styling
+cursor.classList.add("blinking-cursor");
 
 // Add cursor to response container on page load
 responseContainer.appendChild(cursor);
@@ -20,7 +20,7 @@ responseContainer.appendChild(cursor);
 let typingInterval;
 let isTyping = false;
 
-// Typing effect function with cursor alignment
+// Typing effect function with cursor alignment after each character
 function typeText(text) {
     responseContainer.innerHTML = ""; // Clear previous text
     responseContainer.appendChild(cursor); // Ensure the cursor is appended at the start
@@ -30,13 +30,12 @@ function typeText(text) {
 
     function typeCharacter() {
         if (index < text.length) {
+            // Insert next character before the cursor
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
 
-            // Move cursor to the last character typed
+            // Reposition the cursor at the end of the text after each character
             responseContainer.appendChild(cursor);
-
-            // Scroll to the bottom of the container as text is added
             responseContainer.scrollTop = responseContainer.scrollHeight;
 
             typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
