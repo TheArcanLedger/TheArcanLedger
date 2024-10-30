@@ -1,41 +1,28 @@
 const responseContainer = document.getElementById("response");
 const userInput = document.getElementById("user-input");
 const seekButton = document.getElementById("seek-button");
-
-// Create a blinking cursor element and add it to the response container on page load
-const cursor = document.createElement("span");
-cursor.style.display = "inline-block";
-cursor.style.width = "8px";  // Smaller width for a square shape
-cursor.style.height = "8px"; // Adjust height to match width
-cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
-cursor.style.marginLeft = "2px";
-cursor.style.verticalAlign = "middle"; // Align cursor with the middle of the text
-cursor.style.animation = "blink 1s steps(1) infinite";
-cursor.classList.add("cursor-blink");
-
-// Append the cursor to the response container immediately on page load
-responseContainer.appendChild(cursor);
-
-// Stop button to halt response
 const stopButton = document.getElementById("stop-button");
-stopButton.style.display = "none";
 
 let typingInterval; // For typing effect
 let isTyping = false;
 
-// Debounce function to prevent double-clicks
-function debounce(func, delay) {
-    let timer;
-    return function (...args) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => func.apply(this, args), delay);
-    };
-}
+// Create a blinking cursor element
+const cursor = document.createElement("span");
+cursor.style.display = "inline-block";
+cursor.style.width = "8px";  // Smaller width for a square shape
+cursor.style.height = "8px";
+cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
+cursor.style.marginLeft = "2px";
+cursor.style.verticalAlign = "middle";
+cursor.style.animation = "blink 1s steps(1) infinite";
+
+// Append the cursor to the response container immediately on page load
+responseContainer.appendChild(cursor);
 
 // Typing effect function with stop functionality
 function typeText(text) {
     responseContainer.innerHTML = ""; // Clear previous text
-    responseContainer.appendChild(cursor); // Ensure the cursor is appended at the start
+    responseContainer.appendChild(cursor); // Ensure the cursor is appended
     let index = 0;
     isTyping = true;
     stopButton.style.display = "inline-block"; // Show stop button
@@ -45,8 +32,6 @@ function typeText(text) {
             // Insert next character before the cursor
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
-            // Dynamically reposition the cursor
-            responseContainer.appendChild(cursor);
             typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
         } else {
             isTyping = false;
@@ -90,5 +75,15 @@ function sendMessage() {
     });
 }
 
-// Debounced click event for the seek button
-seekButton.addEventListener("click", debounce(sendMessage, 300));
+// Event listener for the "Seek Knowledge" button
+seekButton.addEventListener("click", () => {
+    sendMessage();
+});
+
+// Allow pressing Enter to trigger sendMessage function
+userInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Prevent form submission if any
+        sendMessage();
+    }
+});
