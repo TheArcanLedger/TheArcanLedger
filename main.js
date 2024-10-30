@@ -3,7 +3,7 @@ const userInput = document.getElementById("user-input");
 const seekButton = document.getElementById("seek-button");
 const stopButton = document.getElementById("stop-button");
 
-// Create a blinking cursor element and add it to the response container on page load
+// Create a blinking cursor element
 const cursor = document.createElement("span");
 cursor.style.display = "inline-block";
 cursor.style.width = "8px";
@@ -12,8 +12,9 @@ cursor.style.backgroundColor = "#FFD700";
 cursor.style.marginLeft = "2px";
 cursor.style.verticalAlign = "middle";
 cursor.style.animation = "blink 1s steps(1) infinite";
+cursor.classList.add("blinking-cursor"); // Optional class for styling
 
-// Append the cursor to the response container immediately on page load
+// Add cursor to response container on page load
 responseContainer.appendChild(cursor);
 
 let typingInterval;
@@ -29,11 +30,13 @@ function typeText(text) {
 
     function typeCharacter() {
         if (index < text.length) {
-            // Insert next character before the cursor
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
 
-            // Move cursor to next line if necessary
+            // Move cursor to the last character typed
+            responseContainer.appendChild(cursor);
+
+            // Scroll to the bottom of the container as text is added
             responseContainer.scrollTop = responseContainer.scrollHeight;
 
             typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here

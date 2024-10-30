@@ -30,7 +30,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Adjusted gap for uniformity */
+    gap: 10px; /* Consistent spacing */
 }
 
 h1 {
