@@ -6,9 +6,9 @@ const stopButton = document.getElementById("stop-button");
 // Create a blinking cursor element and add it to the response container on page load
 const cursor = document.createElement("span");
 cursor.style.display = "inline-block";
-cursor.style.width = "8px";  // Smaller width for a square shape
-cursor.style.height = "8px"; // Adjust height to match width
-cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
+cursor.style.width = "8px";
+cursor.style.height = "8px";
+cursor.style.backgroundColor = "#FFD700";
 cursor.style.marginLeft = "2px";
 cursor.style.verticalAlign = "middle";
 cursor.style.animation = "blink 1s steps(1) infinite";
@@ -16,10 +16,10 @@ cursor.style.animation = "blink 1s steps(1) infinite";
 // Append the cursor to the response container immediately on page load
 responseContainer.appendChild(cursor);
 
-let typingInterval; // For typing effect
+let typingInterval;
 let isTyping = false;
 
-// Typing effect function with stop functionality
+// Typing effect function with cursor alignment
 function typeText(text) {
     responseContainer.innerHTML = ""; // Clear previous text
     responseContainer.appendChild(cursor); // Ensure the cursor is appended at the start
@@ -32,6 +32,10 @@ function typeText(text) {
             // Insert next character before the cursor
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
+
+            // Move cursor to next line if necessary
+            responseContainer.scrollTop = responseContainer.scrollHeight;
+
             typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
         } else {
             isTyping = false;
@@ -65,7 +69,6 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
-        // Get the response text from OpenAI and start typing it
         const responseText = data.choices[0].message.content;
         typeText(responseText);
     })
