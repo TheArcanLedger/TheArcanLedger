@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Get elements from the HTML
-    const responseContainer = document.getElementById("output"); // Updated to match `output` div
+    const responseContainer = document.getElementById("output");
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
     const stopButton = document.getElementById("stop-button");
@@ -21,17 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
     cursor.style.verticalAlign = "middle";
     cursor.style.animation = "blink 1s steps(1) infinite";
 
+    // Append the cursor to the response container immediately
+    responseContainer.appendChild(cursor);
+
     // Function to display typing effect with the blinking cursor
     function typeText(text) {
         responseContainer.innerHTML = ""; // Clear previous text
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
-        let index = 0;
+        let index = 0; // Initialize the index for typing
         stopButton.style.display = "inline-block"; // Show stop button
 
+        // Function to type each character and keep cursor at the end
         function typeCharacter() {
             if (index < text.length) {
-                cursor.insertAdjacentText("beforebegin", text.charAt(index));
+                cursor.insertAdjacentText("beforebegin", text.charAt(index)); // Insert character before cursor
                 index++;
                 setTimeout(typeCharacter, 50); // Adjust typing speed here
             } else {
@@ -39,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        typeCharacter();
+        typeCharacter(); // Start typing the characters
     }
 
     // Function to send the user's message to the backend
@@ -81,5 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault(); // Prevent default Enter behavior
             sendMessage();
         }
+    });
+
+    // Stop button functionality to halt the typing effect
+    stopButton.addEventListener("click", () => {
+        clearTimeout(typingInterval); // Clear the typing interval
+        stopButton.style.display = "none"; // Hide stop button
     });
 });
