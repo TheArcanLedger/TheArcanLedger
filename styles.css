@@ -42,9 +42,9 @@ body {
     border: 1px solid #FFD700;
     border-radius: 4px;
     overflow-y: auto;
-    overflow-x: hidden;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    overflow-wrap: break-word; /* Break words to keep them within the box */
+    word-wrap: break-word;      /* Word wrap to ensure text breaks at the end of each line */
+    white-space: pre-wrap;      /* Preserve whitespace and allow line wrapping */
     display: flex;
     align-items: flex-start;
     position: relative;
