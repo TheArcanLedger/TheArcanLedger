@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url('./Images/The Arcan Ledger.png'); /* Background for desktop */
+    background-image: url('/Images/The Arcan Ledger (1).png'); /* Path to your background image */
     background-size: cover; /* This makes the image cover the entire background */
     background-position: center; /* This centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -16,24 +16,7 @@ body {
     font-family: 'Courier New', Courier, monospace; /* Terminal-style font */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align items to the top */
-}
-
-/* Media query for mobile devices */
-@media (max-width: 768px) {
-    body {
-        background-image: url('./Images/The Arcan Ledger Mobile.png'); /* Change this to your mobile image path */
-        background-size: cover; /* This makes the image cover the entire background */
-        background-position: center; /* This centers the image */
-        background-repeat: no-repeat; /* Prevents the image from repeating */
-        height: auto; /* Allows the height to adjust based on content */
-        padding-bottom: 20px; /* Adds padding at the bottom */
-    }
-
-    .container {
-        margin-top: 20px; /* Adjust margin for mobile */
-        padding: 10px; /* Adjust padding for mobile */
-    }
+    align-items: center;
 }
 
 .container {
@@ -44,7 +27,6 @@ body {
     border-radius: 8px;
     background-color: rgba(17, 17, 17, 0.8); /* Slightly transparent for contrast */
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Gold shadow for effect */
-    margin-top: 20px; /* Adds margin to the top */
 }
 
 h1 {
@@ -90,4 +72,16 @@ button {
 
 button:hover {
     background-color: #daa520; /* Darker gold on hover */
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        background-image: url('/Images/The Arcan Ledger Mobile.png'); /* Path for mobile background */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0; /* Removes default margin */
+        height: auto; /* Allows height to be adjusted as per content */
+    }
 }
