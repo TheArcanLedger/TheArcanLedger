@@ -1,14 +1,30 @@
 const responseContainer = document.getElementById("response");
 
+// Function to display typing effect with a blinking cursor
 function typeText(text) {
     responseContainer.textContent = ""; // Clear previous text
     let index = 0;
 
+    // Create a blinking cursor element
+    const cursor = document.createElement("span");
+    cursor.style.display = "inline-block";
+    cursor.style.width = "10px";
+    cursor.style.height = "20px";
+    cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
+    cursor.style.marginLeft = "2px";
+    cursor.style.animation = "blink 1s steps(1) infinite";
+    responseContainer.appendChild(cursor);
+
+    // Function to type each character and move the cursor
     function typeCharacter() {
         if (index < text.length) {
-            responseContainer.textContent += text.charAt(index);
+            // Insert next character before the cursor
+            cursor.insertAdjacentHTML("beforebegin", text.charAt(index));
             index++;
             setTimeout(typeCharacter, 50); // Adjust typing speed here
+        } else {
+            // Cursor stays after the last character
+            responseContainer.appendChild(cursor);
         }
     }
 
