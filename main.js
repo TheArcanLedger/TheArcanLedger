@@ -34,9 +34,9 @@ function typeText(text) {
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
 
-            // Reposition the cursor at the end of the text after each character
+            // Move the cursor to the end of the content to follow the last character
             responseContainer.appendChild(cursor);
-            responseContainer.scrollTop = responseContainer.scrollHeight;
+            responseContainer.scrollTop = responseContainer.scrollHeight; // Keep scroll at the bottom
 
             typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
         } else {
