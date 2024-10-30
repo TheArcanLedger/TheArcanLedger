@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Get elements from the HTML
-    const responseContainer = document.getElementById("response");
+    const responseContainer = document.getElementById("output"); // Updated to match `output` div
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
+    const stopButton = document.getElementById("stop-button");
 
     // Ensure elements exist
-    if (!responseContainer || !userInput || !seekButton) {
+    if (!responseContainer || !userInput || !seekButton || !stopButton) {
         console.error("One or more elements are missing from the HTML.");
         return;
     }
@@ -20,23 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
     cursor.style.verticalAlign = "middle";
     cursor.style.animation = "blink 1s steps(1) infinite";
 
-    // Append the cursor to the response container immediately
-    responseContainer.appendChild(cursor);
-
     // Function to display typing effect with the blinking cursor
     function typeText(text) {
         responseContainer.innerHTML = ""; // Clear previous text
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
         let index = 0;
+        stopButton.style.display = "inline-block"; // Show stop button
 
-        // Function to type each character without using eval or unsafe string methods
         function typeCharacter() {
             if (index < text.length) {
                 cursor.insertAdjacentText("beforebegin", text.charAt(index));
                 index++;
-                // Use function reference instead of string
                 setTimeout(typeCharacter, 50); // Adjust typing speed here
+            } else {
+                stopButton.style.display = "none"; // Hide stop button when typing is complete
             }
         }
 
