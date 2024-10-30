@@ -1,4 +1,4 @@
-/* Basic Reset */
+/* Basic Reset */ 
 * {
     margin: 0;
     padding: 0;
@@ -75,6 +75,21 @@ button {
     border-radius: 4px;
     cursor: pointer;
     margin: 0;
+}
+
+#stop-button {
+    margin-top: 10px;
+    background-color: #FFD700; /* Gold */
+    color: #000;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#stop-button:hover {
+    background-color: #daa520; /* Darker gold on hover */
 }
 
 button:hover {

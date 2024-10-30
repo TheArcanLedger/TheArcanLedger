@@ -21,7 +21,10 @@ stopButton.textContent = "Stop";
 stopButton.style.display = "none";
 stopButton.id = "stop-button";
 stopButton.className = "button"; // Add styling class for consistency
-document.body.appendChild(stopButton);
+
+// Append stop button to the same container as the input field and "Seek Knowledge" button
+const inputContainer = document.querySelector(".input-container");
+inputContainer.appendChild(stopButton);
 
 let typingInterval; // For typing effect
 let isTyping = false;

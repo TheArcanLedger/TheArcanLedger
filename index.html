@@ -8,12 +8,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>ARCAN Terminal</h1>
-        <div id="output">
-            <div id="response" class="typing"></div> <!-- Typing text will appear here -->
+        <div id="response" class="response-box"></div>
+        
+        <!-- Input container -->
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="What is the ca?" />
+            <button id="seek-button">Seek Knowledge</button>
+            <button id="stop-button" style="display: none;">Stop</button>
         </div>
-        <input type="text" id="user-input" placeholder="Enter the Arcan Ledger..." />
-        <button onclick="sendMessage()">Seek</button>
     </div>
 
     <!-- Add the script to run typing effect and send the message -->
