@@ -1,78 +1,86 @@
-// Get elements from the HTML
-const responseContainer = document.getElementById("response");
-const userInput = document.getElementById("user-input");
-const seekButton = document.getElementById("seek-button");
+document.addEventListener("DOMContentLoaded", () => {
+    // Get elements from the HTML
+    const responseContainer = document.getElementById("response");
+    const userInput = document.getElementById("user-input");
+    const seekButton = document.getElementById("seek-button");
 
-// Create a blinking cursor element
-const cursor = document.createElement("span");
-cursor.style.display = "inline-block";
-cursor.style.width = "8px";
-cursor.style.height = "8px";
-cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
-cursor.style.marginLeft = "2px";
-cursor.style.verticalAlign = "middle";
-cursor.style.animation = "blink 1s steps(1) infinite";
+    // Ensure elements exist
+    if (!responseContainer || !userInput || !seekButton) {
+        console.error("One or more elements are missing from the HTML.");
+        return;
+    }
 
-// Append the cursor to the response container immediately
-responseContainer.appendChild(cursor);
+    // Create a blinking cursor element
+    const cursor = document.createElement("span");
+    cursor.style.display = "inline-block";
+    cursor.style.width = "8px";
+    cursor.style.height = "8px";
+    cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
+    cursor.style.marginLeft = "2px";
+    cursor.style.verticalAlign = "middle";
+    cursor.style.animation = "blink 1s steps(1) infinite";
 
-// Function to display typing effect with the blinking cursor
-function typeText(text) {
-    responseContainer.innerHTML = ""; // Clear previous text
-    responseContainer.appendChild(cursor); // Ensure the cursor is appended
+    // Append the cursor to the response container immediately
+    responseContainer.appendChild(cursor);
 
-    let index = 0;
+    // Function to display typing effect with the blinking cursor
+    function typeText(text) {
+        responseContainer.innerHTML = ""; // Clear previous text
+        responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
-    // Function to type each character without using eval or unsafe string methods
-    function typeCharacter() {
-        if (index < text.length) {
-            cursor.insertAdjacentText("beforebegin", text.charAt(index));
-            index++;
-            // Use function reference instead of string
-            setTimeout(typeCharacter, 50); // Adjust typing speed here
+        let index = 0;
+
+        // Function to type each character without using eval or unsafe string methods
+        function typeCharacter() {
+            if (index < text.length) {
+                cursor.insertAdjacentText("beforebegin", text.charAt(index));
+                index++;
+                // Use function reference instead of string
+                setTimeout(typeCharacter, 50); // Adjust typing speed here
+            }
         }
+
+        typeCharacter();
     }
 
-    typeCharacter();
-}
+    // Function to send the user's message to the backend
+    function sendMessage() {
+        const message = userInput.value;
 
-// Function to send the user's message to the backend
-function sendMessage() {
-    const message = userInput.value;
+        // Check if input is empty to prevent sending an empty message
+        if (!message.trim()) return;
 
-    // Check if input is empty to prevent sending an empty message
-    if (!message.trim()) return;
+        // Clear the input field
+        userInput.value = "";
 
-    // Clear the input field
-    userInput.value = "";
+        // Send the user's input to the backend via POST request
+        fetch('/api/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Get the response text and start typing it
+            const responseText = data.choices[0].message.content;
+            typeText(responseText);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            typeText("There was an error retrieving the response. Please try again.");
+        });
+    }
 
-    // Send the user's input to the backend via POST request
-    fetch('/api/ask', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Get the response text and start typing it
-        const responseText = data.choices[0].message.content;
-        typeText(responseText);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        typeText("There was an error retrieving the response. Please try again.");
+    // Event listener for the "Seek Knowledge" button
+    seekButton.addEventListener("click", sendMessage);
+
+    // Event listener for pressing Enter in the input field
+    userInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent default Enter behavior
+            sendMessage();
+        }
     });
-}
-
-// Event listener for the "Seek Knowledge" button
-seekButton.addEventListener("click", sendMessage);
-
-// Event listener for pressing Enter in the input field
-userInput.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Prevent default Enter behavior
-        sendMessage();
-    }
 });
