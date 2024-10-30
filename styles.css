@@ -41,14 +41,16 @@ h1 {
     height: 200px; /* Fixed height for static size */
     background-color: rgba(0, 0, 0, 0.7);
     color: #FFD700;
-    padding: 10px;
+    padding: 10px; /* Padding adjusted for uniform margins */
     border: 1px solid #FFD700;
     border-radius: 4px;
-    margin-top: 20px;
+    margin: 10px 0; /* Uniform top and bottom margin for consistency */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; /* Prevent horizontal scroll */
     word-wrap: break-word; /* Wrap long words within the box */
     white-space: pre-wrap; /* Preserve line breaks and whitespace */
+    display: flex;
+    align-items: flex-start; /* Start text from the top */
 }
 
 input[type="text"] {
