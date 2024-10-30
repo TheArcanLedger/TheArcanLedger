@@ -11,41 +11,38 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Create a blinking cursor element
-    const cursor = document.createElement("span");
-    cursor.style.display = "inline-block";
-    cursor.style.width = "8px";
-    cursor.style.height = "8px";
-    cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
-    cursor.style.marginLeft = "2px";
-    cursor.style.verticalAlign = "middle";
-    cursor.style.animation = "blink 1s steps(1) infinite";
-
-    // Append the cursor to the response container immediately
-    responseContainer.appendChild(cursor);
-
-    // Function to display typing effect with the blinking cursor
-    function typeText(text) {
-        responseContainer.innerHTML = ""; // Clear previous text
-        responseContainer.appendChild(cursor); // Ensure the cursor is appended
-
-        let index = 0; // Initialize the index for typing
-        stopButton.style.display = "inline-block"; // Show stop button
-
-        // Function to type each character and keep cursor at the end
-        function typeCharacter() {
-            if (index < text.length) {
-                cursor.insertAdjacentText("beforebegin", text.charAt(index)); // Insert character before cursor
-                index++;
-                setTimeout(typeCharacter, 50); // Adjust typing speed here
-            } else {
-                stopButton.style.display = "none"; // Hide stop button when typing is complete
-            }
-        }
-
-        typeCharacter(); // Start typing the characters
-    }
-
+      // Create a blinking cursor element
+      const cursor = document.createElement("span");
+      cursor.style.display = "inline-block";
+      cursor.style.width = "8px";
+      cursor.style.height = "8px";
+      cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
+      cursor.style.marginLeft = "2px";
+      cursor.style.verticalAlign = "middle";
+      cursor.style.animation = "blink 1s steps(1) infinite";
+  
+      // Function to display typing effect with the blinking cursor
+      function typeText(text) {
+          responseContainer.innerHTML = ""; // Clear previous text
+          responseContainer.appendChild(cursor); // Ensure the cursor is appended
+  
+          let index = 0; // Initialize the index for typing
+          stopButton.style.display = "inline-block"; // Show stop button
+  
+          // Function to type each character and keep cursor at the end
+          function typeCharacter() {
+              if (index < text.length) {
+                  // Insert character and then append cursor after each character is typed
+                  responseContainer.insertBefore(document.createTextNode(text.charAt(index)), cursor);
+                  index++;
+                  setTimeout(typeCharacter, 50); // Adjust typing speed here
+              } else {
+                  stopButton.style.display = "none"; // Hide stop button when typing is complete
+              }
+          }
+  
+          typeCharacter(); // Start typing the characters
+      }
     // Function to send the user's message to the backend
     function sendMessage() {
         const message = userInput.value;
