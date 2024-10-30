@@ -5,44 +5,46 @@ document.addEventListener("DOMContentLoaded", () => {
     const seekButton = document.getElementById("seek-button");
     const stopButton = document.getElementById("stop-button");
 
+
     // Ensure elements exist
     if (!responseContainer || !userInput || !seekButton || !stopButton) {
         console.error("One or more elements are missing from the HTML.");
         return;
     }
 
- // Create a blinking cursor element
- const cursor = document.createElement("span");
- cursor.classList.add("blinking-cursor");
+    // Create a blinking cursor element
+    const cursor = document.createElement("span");
+    cursor.classList.add("blinking-cursor");
 
- // CSS styles for the cursor
- cursor.style.display = "inline-block";
- cursor.style.width = "8px";
- cursor.style.height = "8px";
- cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
- cursor.style.marginLeft = "2px";
- cursor.style.animation = "blink 1s steps(1) infinite";
+    // CSS styles for the cursor
+    cursor.style.display = "inline-block";
+    cursor.style.width = "8px";
+    cursor.style.height = "8px";
+    cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
+    cursor.style.marginLeft = "2px";
+    cursor.style.animation = "blink 1s steps(1) infinite";
 
- // Function to display typing effect with the blinking cursor
- function typeText(text) {
-     responseContainer.innerHTML = ""; // Clear previous text
-     responseContainer.appendChild(cursor); // Ensure the cursor is appended
+    // Function to display typing effect with the blinking cursor
+    function typeText(text) {
+        responseContainer.innerHTML = ""; // Clear previous text
+        responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
-     let index = 0; // Initialize the index for typing
+        let index = 0; // Initialize the index for typing
 
-     // Function to type each character and keep cursor at the end
-     function typeCharacter() {
-         if (index < text.length) {
-             const span = document.createElement("span");
-             span.textContent = text.charAt(index); // Insert character in a new span
-             responseContainer.insertBefore(span, cursor); // Append each character before the cursor
-             index++;
-             setTimeout(typeCharacter, 50); // Adjust typing speed here
-         }
-     }
+        // Function to type each character and keep cursor at the end
+        function typeCharacter() {
+            if (index < text.length) {
+                const span = document.createElement("span");
+                span.textContent = text.charAt(index); // Insert character in a new span
+                responseContainer.insertBefore(span, cursor); // Append each character before the cursor
+                index++;
+                setTimeout(typeCharacter, 50); // Adjust typing speed here
+            }
+        }
 
-     typeCharacter(); // Start typing the characters
- }
+        typeCharacter(); // Start typing the characters
+    }
+
     // Function to send the user's message to the backend
     function sendMessage() {
         const message = userInput.value;
