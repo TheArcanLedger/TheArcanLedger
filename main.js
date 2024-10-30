@@ -1,16 +1,19 @@
+// Get elements from the HTML
 const responseContainer = document.getElementById("response");
+const userInput = document.getElementById("user-input");
+const seekButton = document.getElementById("seek-button"); 
 
-// Create a blinking cursor element and add it to the response container on page load
+// Create a blinking cursor element
 const cursor = document.createElement("span");
 cursor.style.display = "inline-block";
-cursor.style.width = "8px";  // Smaller width for a square shape
-cursor.style.height = "8px"; // Adjust height to match width
-cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
+cursor.style.width = "8px";
+cursor.style.height = "8px";
+cursor.style.backgroundColor = "#FFD700"; // Golden color for the cursor
 cursor.style.marginLeft = "2px";
-cursor.style.verticalAlign = "middle"; // Align cursor with the middle of the text
+cursor.style.verticalAlign = "middle"; 
 cursor.style.animation = "blink 1s steps(1) infinite";
 
-// Append the cursor to the response container immediately on page load
+// Append the cursor to the response container immediately
 responseContainer.appendChild(cursor);
 
 // Function to display typing effect with the blinking cursor
@@ -23,20 +26,24 @@ function typeText(text) {
     // Function to type each character and keep cursor at the end
     function typeCharacter() {
         if (index < text.length) {
-            // Insert next character before the cursor
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
             setTimeout(typeCharacter, 50); // Adjust typing speed here
         }
     }
 
-    // Start typing with the cursor already visible
     typeCharacter();
 }
 
 // Function to send the user's message to the backend
 function sendMessage() {
-    const userInput = document.getElementById("user-input").value;
+    const message = userInput.value;
+
+    // Check if input is empty, prevent sending an empty message
+    if (!message.trim()) return;
+
+    // Clear the input field
+    userInput.value = "";
 
     // Send the user's input to the backend via POST request
     fetch('/api/ask', {
@@ -44,11 +51,11 @@ function sendMessage() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: userInput })
+        body: JSON.stringify({ message })
     })
     .then(response => response.json())
     .then(data => {
-        // Get the response text from OpenAI and start typing it
+        // Get the response text and start typing it
         const responseText = data.choices[0].message.content;
         typeText(responseText);
     })
@@ -59,12 +66,12 @@ function sendMessage() {
 }
 
 // Event listener for the "Seek Knowledge" button
-document.getElementById("seek-button").addEventListener("click", sendMessage);
+seekButton.addEventListener("click", sendMessage);
 
-// Allow pressing Enter to trigger sendMessage function
-document.getElementById("user-input").addEventListener("keypress", (event) => {
+// Event listener for pressing Enter in the input field
+userInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-        event.preventDefault(); // Prevent form submission
+        event.preventDefault(); // Prevent default Enter behavior
         sendMessage();
     }
 });
