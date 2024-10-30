@@ -1,4 +1,6 @@
 const responseContainer = document.getElementById("response");
+const userInput = document.getElementById("user-input");
+const seekButton = document.getElementById("seek-button"); // Assuming button has this ID
 
 // Create a blinking cursor element and add it to the response container on page load
 const cursor = document.createElement("span");
@@ -13,30 +15,61 @@ cursor.style.animation = "blink 1s steps(1) infinite";
 // Append the cursor to the response container immediately on page load
 responseContainer.appendChild(cursor);
 
-// Function to display typing effect with the blinking cursor
+// Stop button to halt response
+const stopButton = document.createElement("button");
+stopButton.textContent = "Stop";
+stopButton.style.display = "none";
+stopButton.id = "stop-button";
+stopButton.className = "button"; // Add styling class for consistency
+document.body.appendChild(stopButton);
+
+let typingInterval; // For typing effect
+let isTyping = false;
+
+// Debounce function to prevent double-clicks
+function debounce(func, delay) {
+    let timer;
+    return function (...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+// Typing effect function with stop functionality
 function typeText(text) {
     responseContainer.innerHTML = ""; // Clear previous text
-    responseContainer.appendChild(cursor); // Ensure the cursor is appended
-
+    responseContainer.appendChild(cursor); // Ensure the cursor is appended at the start
     let index = 0;
+    isTyping = true;
+    stopButton.style.display = "inline-block"; // Show stop button
 
-    // Function to type each character and keep cursor at the end
     function typeCharacter() {
         if (index < text.length) {
             // Insert next character before the cursor
             cursor.insertAdjacentText("beforebegin", text.charAt(index));
             index++;
-            setTimeout(typeCharacter, 50); // Adjust typing speed here
+            typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
+        } else {
+            isTyping = false;
+            stopButton.style.display = "none"; // Hide stop button when typing is complete
         }
     }
 
-    // Start typing with the cursor already visible
     typeCharacter();
 }
 
+// Stop typing when stop button is clicked
+stopButton.addEventListener("click", () => {
+    clearTimeout(typingInterval);
+    isTyping = false;
+    stopButton.style.display = "none"; // Hide stop button
+});
+
 // Function to send the user's message to the backend
 function sendMessage() {
-    const userInput = document.getElementById("user-input").value;
+    if (isTyping) return; // Prevent sending a new message while typing
+
+    const message = userInput.value;
 
     // Send the user's input to the backend via POST request
     fetch('/api/ask', {
@@ -44,7 +77,7 @@ function sendMessage() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: userInput })
+        body: JSON.stringify({ message })
     })
     .then(response => response.json())
     .then(data => {
@@ -57,3 +90,6 @@ function sendMessage() {
         typeText("There was an error retrieving the response. Please try again.");
     });
 }
+
+// Debounced click event for the seek button
+seekButton.addEventListener("click", debounce(sendMessage, 300));
