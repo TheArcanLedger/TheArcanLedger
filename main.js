@@ -22,12 +22,10 @@ function typeText(text) {
             cursor.insertAdjacentHTML("beforebegin", text.charAt(index));
             index++;
             setTimeout(typeCharacter, 50); // Adjust typing speed here
-        } else {
-            // Cursor stays after the last character
-            responseContainer.appendChild(cursor);
         }
     }
 
+    // Start typing with the cursor already visible
     typeCharacter();
 }
 
