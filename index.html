@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Arcan Ledger Terminal</title>
+    <title>ARCAN Terminal</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <form id="input-form">
-            <input type="text" id="user-input" placeholder="What is it you seek?" required>
-            <button type="submit">Ask</button>
-        </form>
-        <div id="output"></div>
+        <h1>ARCAN Terminal</h1>
+        <div id="output">
+            <div id="response" class="typing"></div> <!-- Typing text will appear here -->
+        </div>
+        <input type="text" id="user-input" placeholder="Enter your message here..." />
+        <button onclick="sendMessage()">Send</button>
     </div>
-    <script src="frontend.js"></script>
+
+    <!-- Add the script to run typing effect and send the message -->
+    <script src="main.js"></script>
 </body>
 </html>
