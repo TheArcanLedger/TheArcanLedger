@@ -1,22 +1,24 @@
 const responseContainer = document.getElementById("response");
 
-// Function to display typing effect with a shorter, square blinking cursor
+// Create a blinking cursor element and add it to the response container on page load
+const cursor = document.createElement("span");
+cursor.style.display = "inline-block";
+cursor.style.width = "8px";  // Smaller width for a square shape
+cursor.style.height = "8px"; // Adjust height to match width
+cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
+cursor.style.marginLeft = "2px";
+cursor.style.verticalAlign = "middle"; // Align cursor with the middle of the text
+cursor.style.animation = "blink 1s steps(1) infinite";
+
+// Append the cursor to the response container immediately on page load
+responseContainer.appendChild(cursor);
+
+// Function to display typing effect with the blinking cursor
 function typeText(text) {
     responseContainer.innerHTML = ""; // Clear previous text
-    let index = 0;
+    responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
-    // Create a blinking cursor element
-    const cursor = document.createElement("span");
-    cursor.style.display = "inline-block";
-    cursor.style.width = "8px";  // Smaller width for a square shape
-    cursor.style.height = "8px"; // Adjust height to match width
-    cursor.style.backgroundColor = "#FFD700"; // Golden blinking cursor
-    cursor.style.marginLeft = "2px";
-    cursor.style.verticalAlign = "middle"; // Align cursor with the middle of the text
-    cursor.style.animation = "blink 1s steps(1) infinite";
-    
-    // Append the cursor to the response container
-    responseContainer.appendChild(cursor);
+    let index = 0;
 
     // Function to type each character and keep cursor at the end
     function typeCharacter() {
