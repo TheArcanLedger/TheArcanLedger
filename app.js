@@ -66,7 +66,7 @@ function getRandomCAResponse() {
 // API endpoint to handle requests from the frontend
 app.post('/api/ask', async (req, res) => {
     const userMessage = req.body.message;
-    const caKeywords = ['CA', 'Ticker', 'contract address', 'Solana'];
+    const caKeywords = ['CA', 'ticker', 'contract address', 'Solana', 'ca?', 'CA?', 'launch', 'When is launch?',];
 
     // Check if the user message contains any CA-related keywords
     const isCAQuery = caKeywords.some(keyword => userMessage.includes(keyword));
@@ -102,8 +102,8 @@ ${isCAQuery ? getRandomCAResponse() : ''}
                     },
                     { role: 'user', content: userMessage }
                 ],
-                temperature: 1.07,
-                max_tokens: 2868,
+                temperature: 1.5,
+                max_tokens: 5000,
                 top_p: 1,
                 frequency_penalty: 0,
                 presence_penalty: 0,
@@ -124,7 +124,7 @@ ${isCAQuery ? getRandomCAResponse() : ''}
             if (data.choices && data.choices.length > 0) {
                 res.json(data); // Return the full data response
             } else {
-                res.status(500).json({ error: "No valid response from the fine-tuned model." });
+                res.status(500).json({ error: "No valid response from the Arcan" });
             }
         }
     } catch (error) {
