@@ -30,7 +30,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Consistent spacing */
+    gap: 10px;
+}
+
+h1 {
+    display: none;
 }
 
 #output {
@@ -41,14 +45,15 @@ body {
     padding: 10px;
     border: 1px solid #FFD700;
     border-radius: 4px;
-    overflow-y: auto;         /* Allow vertical scrolling if needed */
-    overflow-x: hidden;       /* Prevent horizontal scrolling */
-    word-wrap: break-word;    /* Ensure text wraps within the container */
-    white-space: pre-wrap;    /* Preserve spaces and allow text wrapping */
+    overflow-y: auto;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    white-space: pre-wrap;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     position: relative;
-    flex-wrap: wrap;          /* Allow text to wrap onto new lines */
+    line-height: 1.2; /* Adjusted line height for closer spacing */
 }
 
 input[type="text"] {
@@ -59,7 +64,7 @@ input[type="text"] {
     background-color: #000; /* Black background for the input */
     border: 1px solid #FFD700;
     border-radius: 4px;
-    margin-top: 10px; /* Add margin for consistency */
+    margin-top: 10px;
 }
 
 button {
@@ -72,11 +77,11 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px; /* Consistent margin for uniformity */
+    margin-top: 10px;
 }
 
 #stop-button {
-    display: none;
+    margin-top: 10px;
     background-color: #FFD700; /* Gold */
     color: #000;
     border: none;
@@ -86,16 +91,9 @@ button {
     border-radius: 4px;
 }
 
-.blinking-cursor {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background-color: #FFD700;
-    margin-left: 2px;
-    vertical-align: middle;
-    animation: blink 1s steps(1) infinite;
+#stop-button:hover {
+    background-color: #daa520; /* Darker gold on hover */
 }
-
 
 button:hover {
     background-color: #daa520;
@@ -105,4 +103,24 @@ button:hover {
     0% { opacity: 1; }
     50% { opacity: 0; }
     100% { opacity: 1; }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        background-image: url('/Images/The Arcan Ledger Mobile.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        width: 90%;
+        max-width: 100%;
+        padding: 15px;
+        gap: 10px;
+    }
 }
