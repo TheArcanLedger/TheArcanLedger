@@ -85,6 +85,17 @@ button {
     border-radius: 4px;
 }
 
+.blinking-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #FFD700;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s steps(1) infinite;
+}
+
+
 button:hover {
     background-color: #daa520;
 }
