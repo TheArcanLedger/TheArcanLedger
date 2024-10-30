@@ -29,6 +29,11 @@ body {
         height: auto; /* Allows the height to adjust based on content */
         padding-bottom: 20px; /* Adds padding at the bottom */
     }
+
+    .container {
+        margin-top: 20px; /* Adjust margin for mobile */
+        padding: 10px; /* Adjust padding for mobile */
+    }
 }
 
 .container {
