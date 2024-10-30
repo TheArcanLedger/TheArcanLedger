@@ -51,6 +51,29 @@ h1 {
     white-space: pre-wrap; /* Preserve line breaks and whitespace */
     display: flex;
     align-items: flex-start; /* Start text from the top */
+    position: relative; /* Relative positioning for the cursor */
+}
+
+/* Blinking cursor in output box */
+#output::before {
+    content: '';
+    width: 10px; /* Adjust width to create a square block */
+    height: 20px; /* Adjust height to make it a box-like cursor */
+    background-color: #FFD700; /* Golden color */
+    animation: blink 1s steps(1) infinite; /* Blinking animation */
+    position: absolute;
+    top: 10px; /* Position at the start of the output box */
+    left: 10px;
+}
+
+/* Blinking animation */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 input[type="text"] {
@@ -61,26 +84,6 @@ input[type="text"] {
     background-color: rgba(34, 34, 34, 0.9);
     border: 1px solid #FFD700;
     border-radius: 4px;
-    margin: 0; /* Remove default margin */
-    caret-color: transparent; /* Hide default cursor */
-
-    /* Blinking cursor */
-    position: relative;
-}
-
-input[type="text"]::after {
-    content: '|';
-    position: absolute;
-    right: 10px; /* Position cursor at the end of input */
-    animation: blink 1s step-end infinite; /* Blinking animation */
-    color: #FFD700;
-}
-
-/* Blinking animation */
-@keyframes blink {
-    50% {
-        opacity: 0;
-    }
 }
 
 button {
