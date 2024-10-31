@@ -37,10 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function displaySpecialResponse() {
-        const specialMessage = "> CONGRATULATIONS, SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+        const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
                                "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
-                               "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger page along with your Solana wallet address.\n" +
-                               "Your journey into the arcane has earned you a place among the chosen few. 🎉";
+                               "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
+                               "Your journey into the arcane has earned you a place among the chosen few.";
 
         // Clear any previous text and display the special message
         responseContainer.innerHTML = specialMessage;
