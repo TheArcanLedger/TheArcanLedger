@@ -98,6 +98,31 @@ document.addEventListener("DOMContentLoaded", () => {
         sendMessage(trimmedInput);
     }
 
+    function checkNumericCode(code) {
+        fetch('/api/validateCode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.special) {
+                displaySpecialResponse(); // Trigger the special response
+            } else {
+                typeText(data.message || "Invalid or already used code.");
+            }
+        })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+            typeText("An error occurred. Please try again.");
+        });
+    }
+
     // Function to send the user's message to the backend
     function sendMessage(message) {
         // Clear the input field
