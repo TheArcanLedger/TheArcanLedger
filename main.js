@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    let typingInterval; // Typing interval reference
+    let debounceTimeout; // Debounce timeout reference
+
     // Create a blinking cursor element
     const cursor = document.createElement("span");
     cursor.classList.add("blinking-cursor");
@@ -30,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
         let index = 0; // Initialize the index for typing
+        stopButton.style.display = "block"; // Show the stop button
 
         // Function to type each character and keep cursor at the end
         function typeCharacter() {
@@ -40,22 +44,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 responseContainer.insertBefore(span, cursor); // Insert character before cursor
 
                 index++;
-                setTimeout(typeCharacter, 50); // Adjust typing speed here
+                typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
             } else {
                 // Hide the stop button when typing is complete
                 stopButton.style.display = "none";
             }
         }
 
+        clearTimeout(typingInterval); // Clear any previous typing effect
         typeCharacter(); // Start typing the characters
     }
 
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
-                               "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
-                               "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
-                               "Your journey into the Arcan has earned you a place among the chosen few.";
+            "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
+            "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
+            "Your journey into the Arcan has earned you a place among the chosen few.";
 
         // Clear any previous text and display the special message
         responseContainer.innerHTML = specialMessage;
@@ -63,25 +68,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/validateCode', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code }),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.special) {
-                displaySpecialResponse(); // Trigger the special response
-            } else {
-                typeText(data.message || "Invalid or already used code.");
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            typeText("An error occurred. Please try again.");
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.special) {
+                    displaySpecialResponse(); // Trigger the special response
+                } else {
+                    typeText(data.message || "Invalid or already used code.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                typeText("An error occurred. Please try again.");
+            });
     }
 
     // Function to process user input
@@ -98,43 +103,48 @@ document.addEventListener("DOMContentLoaded", () => {
         sendMessage(trimmedInput);
     }
 
+    // Debounced function to process the "Seek Knowledge" button click
+    function debouncedProcessInput() {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            processUserInput(userInput.value);
+            userInput.value = ""; // Clear the input field
+        }, 300); // Adjust debounce time as necessary
+    }
+
     // Function to send the user's message to the backend
     function sendMessage(message) {
         // Clear the input field
         userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ message })
         })
-        .then(response => response.json())
-        .then(data => {
-            // Get the response text and start typing it
-            const responseText = data.choices[0].message.content;
-            typeText(responseText);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            typeText("There was an error retrieving the response. Please try again.");
-        });
+            .then(response => response.json())
+            .then(data => {
+                // Get the response text and start typing it
+                const responseText = data.choices[0].message.content;
+                typeText(responseText);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                typeText("There was an error retrieving the response. Please try again.");
+            });
     }
 
-    // Event listener for the "Seek Knowledge" button
-    seekButton.addEventListener("click", () => {
-        processUserInput(userInput.value);
-        userInput.value = ""; // Clear the input field
-    });
+    // Event listener for the "Seek Knowledge" button with debounce
+    seekButton.addEventListener("click", debouncedProcessInput);
 
     // Event listener for pressing Enter in the input field
     userInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
-            processUserInput(userInput.value);
-            userInput.value = ""; // Clear the input field
+            debouncedProcessInput();
         }
     });
 
