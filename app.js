@@ -3,6 +3,36 @@ import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
+
+// Define __dirname in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables
+dotenv.config({ path: '.env' });
+
+console.log("Loaded API Key:", process.env.OPENAI_API_KEY);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Configure CORS to allow requests from your custom domain
+app.use(cors({ origin: 'https://thearcanledger.app' }));
+
+// Middleware to parse JSON
+app.use(express.json());
+
+// Serve static files from the current directory
+app.use(express.static(__dirname));
+
+// Your existing code for routes, arrays, and functions
+// (keeping everything intact as you've written it)
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
 // Define __dirname in ES module scope
 const __filename = fileURLToPath(import.meta.url);
