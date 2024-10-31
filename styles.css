@@ -138,13 +138,21 @@ button:hover {
         gap: 10px;
     }
 }
+
+/* Style for the Twitter link at the top center */
 .twitter-link {
     display: block;
     text-align: center;
     font-size: 1.2em;
-    color: #FFD700;
+    color: #FFD700; /* Gold color */
     margin-bottom: 20px;
     text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .twitter-link:hover {
