@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let typingInterval; // Typing interval reference
+    let isRequestInProgress = false; // Prevent double-clicks
     let debounceTimeout; // Debounce timeout reference
 
     // Create a blinking cursor element
@@ -38,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Function to type each character and keep cursor at the end
         function typeCharacter() {
             if (index < text.length) {
-                // Create a new span for each character to ensure wrapping
                 const span = document.createElement("span");
                 span.textContent = text.charAt(index);
                 responseContainer.insertBefore(span, cursor); // Insert character before cursor
@@ -46,8 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 index++;
                 typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
             } else {
-                // Hide the stop button when typing is complete
-                stopButton.style.display = "none";
+                stopButton.style.display = "none"; // Hide the stop button when typing is complete
             }
         }
 
@@ -62,31 +61,30 @@ document.addEventListener("DOMContentLoaded", () => {
             "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
             "Your journey into the Arcan has earned you a place among the chosen few.";
 
-        // Clear any previous text and display the special message
         responseContainer.innerHTML = specialMessage;
     }
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/validateCode', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code }),
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.special) {
-                    displaySpecialResponse(); // Trigger the special response
-                } else {
-                    typeText(data.message || "Invalid or already used code.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                typeText("An error occurred. Please try again.");
-            });
+        .then(response => response.json())
+        .then(data => {
+            if (data.special) {
+                displaySpecialResponse(); // Trigger the special response
+            } else {
+                typeText(data.message || "Invalid or already used code.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            typeText("An error occurred. Please try again.");
+        });
     }
 
     // Function to process user input
@@ -105,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Debounced function to process the "Seek Knowledge" button click
     function debouncedProcessInput() {
+        if (isRequestInProgress) return; // Prevent double-clicks
+
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(() => {
             processUserInput(userInput.value);
@@ -114,27 +114,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to send the user's message to the backend
     function sendMessage(message) {
-        // Clear the input field
-        userInput.value = "";
+        if (isRequestInProgress) return;
+        isRequestInProgress = true;
 
         // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ message })
         })
-            .then(response => response.json())
-            .then(data => {
-                // Get the response text and start typing it
-                const responseText = data.choices[0].message.content;
-                typeText(responseText);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                typeText("There was an error retrieving the response. Please try again.");
-            });
+        .then(response => response.json())
+        .then(data => {
+            const responseText = data.choices[0].message.content;
+            typeText(responseText);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            typeText("There was an error retrieving the response. Please try again.");
+        })
+        .finally(() => {
+            isRequestInProgress = false; // Reset flag after request is complete
+        });
     }
 
     // Event listener for the "Seek Knowledge" button with debounce
