@@ -101,6 +101,24 @@ button:hover {
     100% { opacity: 1; }
 }
 
+/* Style for the top-centered header link */
+.header-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.header-link a {
+    color: #FFD700; /* Gold color to match terminal */
+    text-decoration: none;
+    font-size: 1.2em;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.header-link a:hover {
+    color: #fff; /* Change to white on hover */
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
     body {
