@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('https://sinister-haunting-694p64vxwgx7h4rg7.github.dev/api/ask', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
