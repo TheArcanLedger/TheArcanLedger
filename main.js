@@ -24,38 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Append the cursor to the response container immediately
     responseContainer.appendChild(cursor);
 
-    // Array of hidden numeric codes
-    const numericCodes = ["553274", "238491", "920183", "175930", "849301", "982374", "651098", "481927", "372019", "715320", "830126", "649032", "910284", "582017", "781243", "239048", "516872", "498201", "601293", "394081"];
-
-    // Function to display a special response when a numeric code is detected
-    function checkNumericCode(code) {
-        fetch('/api/validateCode', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            typeText(data.message);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            typeText("An error occurred. Please try again.");
-        });
-    }
-
-    function displaySpecialResponse() {
-        const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
-                               "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
-                               "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
-                               "Your journey into the Arcan has earned you a place among the chosen few.";
-
-        // Clear any previous text and display the special message
-        responseContainer.innerHTML = specialMessage;
-    }
-
     // Function to display typing effect with the blinking cursor
     function typeText(text) {
         responseContainer.innerHTML = ""; // Clear previous text
@@ -82,18 +50,52 @@ document.addEventListener("DOMContentLoaded", () => {
         typeCharacter(); // Start typing the characters
     }
 
-    // Function to send the user's message to the backend or check for numeric codes
-    function processUserInput(userInput) {
-        const trimmedInput = userInput.trim();
-        
-        // Check if input is one of the hidden numeric codes
-        if (/^\d+$/.test(trimmedInput)) { // Validating input as numeric
-            checkNumericCode(trimmedInput); // Use the backend validation
+    // Function to display a special response when a valid numeric code is detected
+    function displaySpecialResponse() {
+        const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+                               "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
+                               "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
+                               "Your journey into the Arcan has earned you a place among the chosen few.";
+
+        // Clear any previous text and display the special message
+        responseContainer.innerHTML = specialMessage;
+    }
+
+    // Function to check if the input code is valid
+    function checkNumericCode(code) {
+        fetch('/api/validateCode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.special) {
+                displaySpecialResponse(); // Trigger the special response
+            } else {
+                typeText(data.message || "Invalid or already used code.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            typeText("An error occurred. Please try again.");
+        });
+    }
+
+    // Function to process user input
+    function processUserInput(input) {
+        const trimmedInput = input.trim();
+
+        // Check if input is a numeric code
+        if (/^\d+$/.test(trimmedInput)) {
+            checkNumericCode(trimmedInput); // Use backend validation for numeric codes
             return; // Stop further processing if it's a numeric code
         }
 
         // Otherwise, proceed with normal message handling
-        sendMessage(userInput);
+        sendMessage(trimmedInput);
     }
 
     // Function to send the user's message to the backend
@@ -123,15 +125,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Event listener for the "Seek Knowledge" button
     seekButton.addEventListener("click", () => {
-        processUserInput(userInput.value); // Call the new function
+        processUserInput(userInput.value);
         userInput.value = ""; // Clear the input field
     });
 
     // Event listener for pressing Enter in the input field
     userInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
-            event.preventDefault(); // Prevent default Enter behavior
-            processUserInput(userInput.value); // Call the new function
+            event.preventDefault();
+            processUserInput(userInput.value);
             userInput.value = ""; // Clear the input field
         }
     });

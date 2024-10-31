@@ -100,15 +100,14 @@ app.post('/api/ask', async (req, res) => {
 // Endpoint to validate numeric codes
 app.post('/api/validateCode', (req, res) => {
     const { code } = req.body;
-    if (numericCodes.hasOwnProperty(code)) {
-        if (!numericCodes[code]) {
-            numericCodes[code] = true;
-            res.json({ valid: true, message: "Congratulations, you've unlocked a special reward!" });
-        } else {
-            res.json({ valid: false, message: "This code has already been used." });
-        }
+    const isValidCode = numericCodes.includes(code);
+
+    if (isValidCode) {
+        // Remove the used code from the array
+        numericCodes = numericCodes.filter(c => c !== code);
+        res.json({ special: true }); // Set flag for special response
     } else {
-        res.json({ valid: false, message: "Invalid code." });
+        res.json({ special: false, message: "Code is invalid or already used." });
     }
 });
 
