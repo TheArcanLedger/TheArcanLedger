@@ -26,12 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Array of hidden numeric codes
     const numericCodes = ["553274", "238491", "920183", "175930", "849301", "982374", "651098", "481927", "372019", "715320", "830126", "649032", "910284", "582017", "781243", "239048", "516872", "498201", "601293", "394081"];
+    const usedCodes = []; // Array to keep track of used numeric codes
 
     // Function to display a special response when a numeric code is detected
     function checkForNumericCode(userInput) {
-        const codeIndex = numericCodes.indexOf(userInput.trim());
-        if (codeIndex !== -1) {
-            numericCodes.splice(codeIndex, 1); // Remove the code from the array
+        const code = userInput.trim();
+        
+        // Check if the code is valid and hasn't been used before
+        if (numericCodes.includes(code) && !usedCodes.includes(code)) {
+            usedCodes.push(code); // Mark this code as used
             displaySpecialResponse();
             return true; // Stop further processing if it's a numeric code
         }
@@ -42,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
                                "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
                                "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
-                               "Your journey into the Arcan has earned you a place among the chosen few.";
+                               "Your journey into the arcane has earned you a place among the chosen few.";
 
         // Clear any previous text and display the special message
         responseContainer.innerHTML = specialMessage;
