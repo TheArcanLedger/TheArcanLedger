@@ -3,12 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const responseContainer = document.getElementById("output");
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
+    const stopButton = document.getElementById("stop-button");
 
     // Ensure elements exist
-    if (!responseContainer || !userInput || !seekButton) {
+    if (!responseContainer || !userInput || !seekButton || !stopButton) {
         console.error("One or more elements are missing from the HTML.");
         return;
     }
+
+    let typingInterval; // Typing interval reference
 
     // Create a blinking cursor element
     const cursor = document.createElement("span");
@@ -29,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
         let index = 0; // Initialize the index for typing
+        stopButton.style.display = "block"; // Show the stop button
 
         // Function to type each character and keep cursor at the end
         function typeCharacter() {
@@ -39,58 +43,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 responseContainer.insertBefore(span, cursor); // Insert character before cursor
 
                 index++;
-                setTimeout(typeCharacter, 50); // Adjust typing speed here
+                typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
+            } else {
+                // Hide the stop button when typing is complete
+                stopButton.style.display = "none";
             }
         }
 
+        clearTimeout(typingInterval); // Clear any previous typing effect
         typeCharacter(); // Start typing the characters
-    }
-
-    // Function to display a special response when a valid numeric code is detected
-    function displaySpecialResponse() {
-        const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
-            "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
-            "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
-            "Your journey into the Arcan has earned you a place among the chosen few.";
-
-        // Clear any previous text and display the special message
-        responseContainer.innerHTML = specialMessage;
-    }
-
-    // Function to check if the input code is valid
-    function checkNumericCode(code) {
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.special) {
-                    displaySpecialResponse(); // Trigger the special response
-                } else {
-                    typeText(data.message || "Invalid or already used code.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                typeText("An error occurred. Please try again.");
-            });
     }
 
     // Function to process user input
     function processUserInput(input) {
         const trimmedInput = input.trim();
-
-        // Check if input is a numeric code
-        if (/^\d+$/.test(trimmedInput)) {
-            checkNumericCode(trimmedInput); // Use backend validation for numeric codes
-            return; // Stop further processing if it's a numeric code
-        }
-
-        // Otherwise, proceed with normal message handling
         sendMessage(trimmedInput);
     }
 
@@ -100,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -132,5 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
             processUserInput(userInput.value);
             userInput.value = ""; // Clear the input field
         }
+    });
+
+    // Stop button functionality to halt the typing effect
+    stopButton.addEventListener("click", () => {
+        clearTimeout(typingInterval); // Clear the typing interval
+        stopButton.style.display = "none"; // Hide stop button
     });
 });
