@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('/api/validateCode', {
+        fetch('https://sinister-haunting-694p64vxwgx7h4rg7.github.dev/api/validateCode', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -98,38 +98,13 @@ document.addEventListener("DOMContentLoaded", () => {
         sendMessage(trimmedInput);
     }
 
-    function checkNumericCode(code) {
-        fetch('/api/validateCode', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code }),
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(data => {
-            if (data.special) {
-                displaySpecialResponse(); // Trigger the special response
-            } else {
-                typeText(data.message || "Invalid or already used code.");
-            }
-        })
-        .catch(error => {
-            console.error("Fetch Error:", error);
-            typeText("An error occurred. Please try again.");
-        });
-    }
-
     // Function to send the user's message to the backend
     function sendMessage(message) {
         // Clear the input field
         userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('/api/ask', {
+        fetch('https://sinister-haunting-694p64vxwgx7h4rg7.github.dev/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
