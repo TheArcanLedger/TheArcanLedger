@@ -56,7 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+
             "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
+            
             "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
             "Your journey into the Arcan has earned you a place among the chosen few.";
 
@@ -90,10 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Consolidated function to send the user's message to the backend
     function sendMessage(message) {
-        // Clear the input field
-        userInput.value = "";
-
-        // Send the user's input to the backend via POST request
+        // Keep the input text until the response is complete for screenshots
         fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
             method: 'POST',
             headers: {
@@ -139,7 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Event listener for the "Seek Knowledge" button
     seekButton.addEventListener("click", () => {
         processUserInput(userInput.value);
-        userInput.value = ""; // Clear the input field
+    });
+
+    // Event listener to clear input when the user refocuses on the input box
+    userInput.addEventListener("focus", () => {
+        userInput.value = ""; // Clear input only when user refocuses for a new entry
     });
 
     // Event listener for pressing Enter in the input field
@@ -147,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.key === "Enter") {
             event.preventDefault();
             processUserInput(userInput.value);
-            userInput.value = ""; // Clear the input field
         }
     });
 
