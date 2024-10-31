@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
-        
                                "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
                                "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
                                "Your journey into the Arcan has earned you a place among the chosen few.";
@@ -64,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/validateCode', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
