@@ -49,7 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+
             "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
+            
             "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
             "Your journey into the Arcan has earned you a place among the chosen few.";
 
@@ -60,4 +62,77 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to check if the input code is valid
     function checkNumericCode(code) {
         fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
-            metho
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.special) {
+                    displaySpecialResponse(); // Trigger the special response
+                } else {
+                    typeText(data.message || "Invalid or already used code.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                typeText("An error occurred. Please try again.");
+            });
+    }
+
+    // Function to process user input
+    function processUserInput(input) {
+        const trimmedInput = input.trim();
+
+        // Check if input is a numeric code
+        if (/^\d+$/.test(trimmedInput)) {
+            checkNumericCode(trimmedInput); // Use backend validation for numeric codes
+            return; // Stop further processing if it's a numeric code
+        }
+
+        // Otherwise, proceed with normal message handling
+        sendMessage(trimmedInput);
+    }
+
+    // Function to send the user's message to the backend
+    function sendMessage(message) {
+        // Clear the input field
+        userInput.value = "";
+
+        // Send the user's input to the backend via POST request
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Get the response text and start typing it
+                const responseText = data.choices[0].message.content;
+                typeText(responseText);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                typeText("There was an error retrieving the response. Please try again.");
+            });
+    }
+
+    // Event listener for the "Seek Knowledge" button
+    seekButton.addEventListener("click", () => {
+        processUserInput(userInput.value);
+        userInput.value = ""; // Clear the input field
+    });
+
+    // Event listener for pressing Enter in the input field
+    userInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            processUserInput(userInput.value);
+            userInput.value = ""; // Clear the input field
+        }
+    });
+});
