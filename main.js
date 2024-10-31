@@ -3,12 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const responseContainer = document.getElementById("output");
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
+    const stopButton = document.getElementById("stop-button");
 
     // Ensure elements exist
-    if (!responseContainer || !userInput || !seekButton) {
+    if (!responseContainer || !userInput || !seekButton || !stopButton) {
         console.error("One or more elements are missing from the HTML.");
         return;
     }
+
+    let typingInterval; // Typing interval reference for stop functionality
 
     // Create a blinking cursor element
     const cursor = document.createElement("span");
@@ -29,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
         let index = 0; // Initialize the index for typing
+        stopButton.style.display = "block"; // Show the stop button
 
         // Function to type each character and keep cursor at the end
         function typeCharacter() {
@@ -39,24 +43,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 responseContainer.insertBefore(span, cursor); // Insert character before cursor
 
                 index++;
-                setTimeout(typeCharacter, 50); // Adjust typing speed here
+                typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
+            } else {
+                stopButton.style.display = "none"; // Hide stop button when typing is complete
             }
         }
 
+        clearTimeout(typingInterval); // Clear any previous typing interval
         typeCharacter(); // Start typing the characters
     }
 
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
-
             "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
-
             "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
             "Your journey into the Arcan has earned you a place among the chosen few.";
 
         // Clear any previous text and display the special message
         responseContainer.innerHTML = specialMessage;
+        stopButton.style.display = "none"; // Hide the stop button after displaying the special response
     }
 
     // Function to check if the input code is valid
@@ -143,5 +149,11 @@ document.addEventListener("DOMContentLoaded", () => {
             processUserInput(userInput.value);
             userInput.value = ""; // Clear the input field
         }
+    });
+
+    // Stop button functionality to halt the typing effect
+    stopButton.addEventListener("click", () => {
+        clearTimeout(typingInterval); // Clear the typing interval
+        stopButton.style.display = "none"; // Hide the stop button
     });
 });
