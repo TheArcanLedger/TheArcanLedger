@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
