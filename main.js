@@ -3,17 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const responseContainer = document.getElementById("output");
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
-    const stopButton = document.getElementById("stop-button");
 
     // Ensure elements exist
-    if (!responseContainer || !userInput || !seekButton || !stopButton) {
+    if (!responseContainer || !userInput || !seekButton) {
         console.error("One or more elements are missing from the HTML.");
         return;
     }
-
-    let typingInterval; // Typing interval reference
-    let isRequestInProgress = false; // Prevent double-clicks
-    let debounceTimeout; // Debounce timeout reference
 
     // Create a blinking cursor element
     const cursor = document.createElement("span");
@@ -34,23 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
         let index = 0; // Initialize the index for typing
-        stopButton.style.display = "block"; // Show the stop button
 
         // Function to type each character and keep cursor at the end
         function typeCharacter() {
             if (index < text.length) {
+                // Create a new span for each character to ensure wrapping
                 const span = document.createElement("span");
                 span.textContent = text.charAt(index);
                 responseContainer.insertBefore(span, cursor); // Insert character before cursor
 
                 index++;
-                typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
-            } else {
-                stopButton.style.display = "none"; // Hide the stop button when typing is complete
+                setTimeout(typeCharacter, 50); // Adjust typing speed here
             }
         }
 
-        clearTimeout(typingInterval); // Clear any previous typing effect
         typeCharacter(); // Start typing the characters
     }
 
@@ -61,30 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
             "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
             "Your journey into the Arcan has earned you a place among the chosen few.";
 
+        // Clear any previous text and display the special message
         responseContainer.innerHTML = specialMessage;
     }
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/validateCode', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code }),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.special) {
-                displaySpecialResponse(); // Trigger the special response
-            } else {
-                typeText(data.message || "Invalid or already used code.");
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            typeText("An error occurred. Please try again.");
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.special) {
+                    displaySpecialResponse(); // Trigger the special response
+                } else {
+                    typeText(data.message || "Invalid or already used code.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                typeText("An error occurred. Please try again.");
+            });
     }
 
     // Function to process user input
@@ -101,58 +94,43 @@ document.addEventListener("DOMContentLoaded", () => {
         sendMessage(trimmedInput);
     }
 
-    // Debounced function to process the "Seek Knowledge" button click
-    function debouncedProcessInput() {
-        if (isRequestInProgress) return; // Prevent double-clicks
-
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(() => {
-            processUserInput(userInput.value);
-            userInput.value = ""; // Clear the input field
-        }, 300); // Adjust debounce time as necessary
-    }
-
     // Function to send the user's message to the backend
     function sendMessage(message) {
-        if (isRequestInProgress) return;
-        isRequestInProgress = true;
+        // Clear the input field
+        userInput.value = "";
 
         // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/api/ask', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ message })
         })
-        .then(response => response.json())
-        .then(data => {
-            const responseText = data.choices[0].message.content;
-            typeText(responseText);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            typeText("There was an error retrieving the response. Please try again.");
-        })
-        .finally(() => {
-            isRequestInProgress = false; // Reset flag after request is complete
-        });
+            .then(response => response.json())
+            .then(data => {
+                // Get the response text and start typing it
+                const responseText = data.choices[0].message.content;
+                typeText(responseText);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                typeText("There was an error retrieving the response. Please try again.");
+            });
     }
 
-    // Event listener for the "Seek Knowledge" button with debounce
-    seekButton.addEventListener("click", debouncedProcessInput);
+    // Event listener for the "Seek Knowledge" button
+    seekButton.addEventListener("click", () => {
+        processUserInput(userInput.value);
+        userInput.value = ""; // Clear the input field
+    });
 
     // Event listener for pressing Enter in the input field
     userInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
-            debouncedProcessInput();
+            processUserInput(userInput.value);
+            userInput.value = ""; // Clear the input field
         }
-    });
-
-    // Stop button functionality to halt the typing effect
-    stopButton.addEventListener("click", () => {
-        clearTimeout(typingInterval); // Clear the typing interval
-        stopButton.style.display = "none"; // Hide stop button
     });
 });
