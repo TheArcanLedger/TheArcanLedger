@@ -25,19 +25,25 @@ document.addEventListener("DOMContentLoaded", () => {
     responseContainer.appendChild(cursor);
 
     // Array of hidden numeric codes
-    const numericCodes = ["553274", "238491", "920183", "175930", "849301", "982374", "651098", "481927", "372019", "715320", "830126", "649032", "910284", "582017", "781243", "239048", "516872", "498201", "601293", "394081"];
+    const numericCodes = [
+        "553274", "238491", "920183", "175930", "849301", 
+        "982374", "651098", "481927", "372019", "715320", 
+        "830126", "649032", "910284", "582017", "781243", 
+        "239048", "516872", "498201", "601293", "394081"
+    ];
 
     // Function to display a special response when a numeric code is detected
     function checkForNumericCode(userInput) {
         if (numericCodes.includes(userInput.trim())) {
-            displaySpecialResponse();
+            displaySpecialResponse(userInput.trim());
+            numericCodes.splice(numericCodes.indexOf(userInput.trim()), 1); // Remove code after use
             return true; // Stop further processing if it's a numeric code
         }
         return false; // Continue with normal processing otherwise
     }
 
-    function displaySpecialResponse() {
-        const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+    function displaySpecialResponse(code) {
+        const specialMessage = `> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key: ${code}.\n\n` +
                                "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
                                "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
                                "Your journey into the arcane has earned you a place among the chosen few.";
@@ -64,23 +70,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 index++;
                 setTimeout(typeCharacter, 50); // Adjust typing speed here
             } else {
-                // Hide the stop button when typing is complete
-                stopButton.style.display = "none";
+                stopButton.style.display = "none"; // Hide stop button when typing is complete
             }
         }
 
         typeCharacter(); // Start typing the characters
     }
 
-    // Function to send the user's message to the backend or check for numeric codes
-    function processUserInput(userInput) {
-        // Check if input is one of the hidden numeric codes
-        if (checkForNumericCode(userInput)) {
-            return; // Stop further processing if it's a numeric code
-        }
+    // Function to handle user input, checking for numeric codes
+    function processUserInput(userInputText) {
+        if (checkForNumericCode(userInputText)) return; // Stop if numeric code is detected
 
-        // Otherwise, proceed with normal message handling
-        sendMessage(userInput);
+        // Proceed with normal message handling
+        sendMessage(userInputText);
     }
 
     // Function to send the user's message to the backend
@@ -110,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Event listener for the "Seek Knowledge" button
     seekButton.addEventListener("click", () => {
-        processUserInput(userInput.value); // Call the new function
+        processUserInput(userInput.value); // Call the processing function
         userInput.value = ""; // Clear the input field
     });
 
@@ -118,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             event.preventDefault(); // Prevent default Enter behavior
-            processUserInput(userInput.value); // Call the new function
+            processUserInput(userInput.value); // Call the processing function
             userInput.value = ""; // Clear the input field
         }
     });
