@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to check if the input code is valid
     function checkNumericCode(code) {
-        fetch('https://sinister-haunting-694p64vxwgx7h4rg7.github.dev/api/validateCode', {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
