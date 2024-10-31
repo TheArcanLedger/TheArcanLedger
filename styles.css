@@ -138,3 +138,15 @@ button:hover {
         gap: 10px;
     }
 }
+.twitter-link {
+    display: block;
+    text-align: center;
+    font-size: 1.2em;
+    color: #FFD700;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.twitter-link:hover {
+    color: #daa520; /* Darker gold on hover */
+}
