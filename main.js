@@ -54,12 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
         typeCharacter(); // Start typing the characters
     }
 
-    // Function to process user input
-    function processUserInput(input) {
-        const trimmedInput = input.trim();
-        sendMessage(trimmedInput);
-    }
-
     // Function to send the user's message to the backend
     function sendMessage(message) {
         // Clear the input field
@@ -73,21 +67,21 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({ message })
         })
-            .then(response => response.json())
-            .then(data => {
-                // Get the response text and start typing it
-                const responseText = data.choices[0].message.content;
-                typeText(responseText);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                typeText("There was an error retrieving the response. Please try again.");
-            });
+        .then(response => response.json())
+        .then(data => {
+            // Get the response text and start typing it
+            const responseText = data.choices[0].message.content;
+            typeText(responseText);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            typeText("There was an error retrieving the response. Please try again.");
+        });
     }
 
     // Event listener for the "Seek Knowledge" button
     seekButton.addEventListener("click", () => {
-        processUserInput(userInput.value);
+        sendMessage(userInput.value);
         userInput.value = ""; // Clear the input field
     });
 
@@ -95,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
-            processUserInput(userInput.value);
+            sendMessage(userInput.value);
             userInput.value = ""; // Clear the input field
         }
     });
@@ -103,6 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Stop button functionality to halt the typing effect
     stopButton.addEventListener("click", () => {
         clearTimeout(typingInterval); // Clear the typing interval
-        stopButton.style.display = "none"; // Hide stop button
+        stopButton.style.display = "none"; // Hide stop button immediately
     });
 });
