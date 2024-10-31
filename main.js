@@ -3,15 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const responseContainer = document.getElementById("output");
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
-    const stopButton = document.getElementById("stop-button"); // Stop button element
 
     // Ensure elements exist
-    if (!responseContainer || !userInput || !seekButton || !stopButton) {
+    if (!responseContainer || !userInput || !seekButton) {
         console.error("One or more elements are missing from the HTML.");
         return;
     }
-
-    let typingInterval; // Typing interval reference
 
     // Create a blinking cursor element
     const cursor = document.createElement("span");
@@ -32,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
         responseContainer.appendChild(cursor); // Ensure the cursor is appended
 
         let index = 0; // Initialize the index for typing
-        stopButton.style.display = "block"; // Show the stop button
 
         // Function to type each character and keep cursor at the end
         function typeCharacter() {
@@ -43,55 +39,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 responseContainer.insertBefore(span, cursor); // Insert character before cursor
 
                 index++;
-                typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
-            } else {
-                stopButton.style.display = "none"; // Hide stop button when typing completes
+                setTimeout(typeCharacter, 50); // Adjust typing speed here
             }
         }
 
-        clearTimeout(typingInterval); // Clear any previous typing effect
         typeCharacter(); // Start typing the characters
     }
 
-    // Function to send the user's message to the backend
-    function sendMessage(message) {
-        // Clear the input field
-        userInput.value = "";
+    // Function to display a special response when a valid numeric code is detected
+    function displaySpecialResponse() {
+        const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+            "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
+            "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
+            "Your journey into the Arcan has earned you a place among the chosen few.";
 
-        // Send the user's input to the backend via POST request
-        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Get the response text and start typing it
-            const responseText = data.choices[0].message.content;
-            typeText(responseText);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            typeText("There was an error retrieving the response. Please try again.");
-        });
+        // Clear any previous text and display the special message
+        responseContainer.innerHTML = specialMessage;
     }
 
-    // Event listener for the "Seek Knowledge" button
-    seekButton.addEventListener("click", () => {
-        sendMessage(userInput.value);
-        userInput.value = ""; // Clear the input field
-    });
-
-    // Event listener for pressing Enter in the input field
-    userInput.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            sendMessage(userInput.value);
-            userInput.value = ""; // Clear the input field
-        }
-    });
-
-    // Note: No functionality added for stopButton yet
-});
+    // Function to check if the input code is valid
+    function checkNumericCode(code) {
+        fetch('https://thearcanledger-050a6f44919a.herokuapp.com/', {
+            metho
