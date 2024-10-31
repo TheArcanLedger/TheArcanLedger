@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
+        
                                "▂▃▄▅▆▇█▓▒░ 🗝️ ░▒▓█▇▆▅▄▃▂\n\n" +
                                "To claim your reward, take a screenshot of this key and tweet it to the main ARCAN Ledger X page along with your Solana wallet address.\n" +
                                "Your journey into the Arcan has earned you a place among the chosen few.";
