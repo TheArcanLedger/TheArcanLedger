@@ -82,21 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
-    // Function to process user input
-    function processUserInput(input) {
-        const trimmedInput = input.trim();
-
-        // Check if input is a numeric code
-        if (/^\d+$/.test(trimmedInput)) {
-            checkNumericCode(trimmedInput); // Use backend validation for numeric codes
-            return; // Stop further processing if it's a numeric code
-        }
-
-        // Otherwise, proceed with normal message handling
-        sendMessage(trimmedInput);
-    }
-
-    // Function to send the user's message to the backend
+    // Consolidated function to send the user's message to the backend
     function sendMessage(message) {
         // Clear the input field
         userInput.value = "";
@@ -109,16 +95,39 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({ message })
         })
-            .then(response => response.json())
-            .then(data => {
-                // Get the response text and start typing it
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Check if response data has the expected structure
+            if (data && data.choices && data.choices[0] && data.choices[0].message) {
                 const responseText = data.choices[0].message.content;
                 typeText(responseText);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                typeText("There was an error retrieving the response. Please try again.");
-            });
+            } else {
+                throw new Error("Unexpected response structure");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            typeText("There was an error retrieving the response. Please try again.");
+        });
+    }
+
+    // Function to process user input
+    function processUserInput(input) {
+        const trimmedInput = input.trim();
+
+        // Check if input is a numeric code
+        if (/^\d+$/.test(trimmedInput)) {
+            checkNumericCode(trimmedInput); // Use backend validation for numeric codes
+            return; // Stop further processing if it's a numeric code
+        }
+
+        // Otherwise, proceed with normal message handling
+        sendMessage(trimmedInput);
     }
 
     // Event listener for the "Seek Knowledge" button
