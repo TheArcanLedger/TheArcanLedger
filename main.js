@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const responseContainer = document.getElementById("output");
     const userInput = document.getElementById("user-input");
     const seekButton = document.getElementById("seek-button");
-    const stopButton = document.getElementById("stop-button");
+    const stopButton = document.getElementById("stop-button"); // Stop button element
 
     // Ensure elements exist
     if (!responseContainer || !userInput || !seekButton || !stopButton) {
@@ -45,8 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 index++;
                 typingInterval = setTimeout(typeCharacter, 50); // Adjust typing speed here
             } else {
-                // Hide the stop button when typing is complete
-                stopButton.style.display = "none";
+                stopButton.style.display = "none"; // Hide stop button when typing completes
             }
         }
 
@@ -94,9 +93,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Stop button functionality to halt the typing effect
-    stopButton.addEventListener("click", () => {
-        clearTimeout(typingInterval); // Clear the typing interval
-        stopButton.style.display = "none"; // Hide stop button immediately
-    });
+    // Note: No functionality added for stopButton yet
 });
