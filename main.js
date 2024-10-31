@@ -50,6 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
         typeCharacter(); // Start typing the characters
     }
 
+     // Array of hidden numeric codes
+     const numericCodes = ["553274", "238491", "920183", "175930", "849301", "982374", "651098", "481927", "372019", "715320", "830126", "649032", "910284", "582017", "781243", "239048", "516872", "498201", "601293", "394081"];
+
+
     // Function to display a special response when a valid numeric code is detected
     function displaySpecialResponse() {
         const specialMessage = "> CONGRATULATIONS SEEKER! You've unlocked a hidden ARCΛN key.\n\n" +
