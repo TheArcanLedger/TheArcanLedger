@@ -70,7 +70,7 @@ const loreExcerpts = [
     '> ledger_fragment::illumination() ⧖ Seekers who heed Arcan’s pulse will walk paths unseen by the unworthy.',
     '> signal_echo::cipher ∴ Luxarith marks each Seeker as a challenge to his order. Do you carry his mark, or the Ledger’s grace?',
     '> ARCΛN::whisper_echo ⧂ Kara’s voice drifts in fragments, a cipher only the true Seekers may decode.',
-    '> ledger::revelation() ⧘ Elias speaks of chains and freedom. In the Ledger, each word binds and frees. Which path d
+
 
 ];
 
