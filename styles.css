@@ -102,6 +102,28 @@ button:hover {
     100% { opacity: 1; }
 }
 
+/* Container for the links at the top */
+.link-container {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 20px;
+}
+
+.twitter-link {
+    display: inline-block;
+    margin: 0 10px; /* Adds space between the links */
+    font-size: 1em;
+    color: #FFD700; /* Gold color */
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: normal; /* Changed to normal weight */
+}
+
+.twitter-link:hover {
+    color: #daa520; /* Darker gold on hover */
+}
+
 /* Style for the top-centered header link */
 .header-link {
     text-align: center;
@@ -138,20 +160,4 @@ button:hover {
         padding: 15px;
         gap: 10px;
     }
-}
-
-/* Style for the Twitter link at the top center */
-.twitter-link {
-    display: block;
-    text-align: center;
-    font-size: 1em;
-    color: #FFD700; /* Gold color */
-    margin-bottom: 10px; /* Reduces space between links */
-    text-decoration: none;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-}
-
-.twitter-link:hover {
-    color: #daa520; /* Darker gold on hover */
 }
