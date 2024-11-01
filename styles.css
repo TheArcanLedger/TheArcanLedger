@@ -141,7 +141,7 @@ button:hover {
 
 /* Style for the Twitter link at the top center */
 .twitter-link {
-    display: block;
+    display: block; /* Ensures each link appears on a new line */
     text-align: center;
     font-size: 1.em;
     color: #FFD700; /* Gold color */
