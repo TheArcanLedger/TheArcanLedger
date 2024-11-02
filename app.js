@@ -35,12 +35,12 @@ const loreFiles = {
 
 // Define keywords to match user inputs to lore files
 const loreKeywords = {
-    Elias: ['elias', 'oracle', 'leader', 'guide'],
-    Kara: ['kara', 'cipherist', 'cryptographer', 'decipher'],
-    Arel: ['arel', 'keeper', 'guardian', 'light'],
-    Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption'],
-    ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow'],
-    SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light'],
+    Elias: ['elias', 'oracle', 'leader', 'guide','story', 'lore'],
+    Kara: ['kara', 'cipherist', 'cryptographer', 'decipher','story', 'lore'],
+    Arel: ['arel', 'keeper', 'guardian', 'light','story', 'lore'],
+    Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption','story', 'lore'],
+    ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow','story', 'lore'],
+    SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light''story', 'lore'],
     TheArcan: ['arcan', 'dimension', 'realm', 'ledger', 'environment', 'story', 'lore']
 };
 
