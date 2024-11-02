@@ -13,34 +13,48 @@ const __dirname = path.dirname(__filename);
 // Load environment variables
 dotenv.config({ path: '.env' });
 
+if (!process.env.OPENAI_API_KEY) {
+    console.error("Error: OpenAI API key is missing. Please set it in the .env file.");
+    process.exit(1);
+}
+
 console.log("Loaded API Key:", process.env.OPENAI_API_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors()); // Temporarily allowing all origins for troubleshooting
+app.use(cors()); // Allowing all origins for troubleshooting
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// Load lore files into memory
+// Load lore files into memory with correct capitalization
+function loadLoreFile(filePath) {
+    try {
+        return fs.readFileSync(filePath, 'utf-8');
+    } catch (error) {
+        console.error(`Error loading file ${filePath}:`, error);
+        return '';
+    }
+}
+
 const loreFiles = {
-    Elias: fs.readFileSync(path.join(__dirname, 'lore/elia.txt'), 'utf-8'),
-    Kara: fs.readFileSync(path.join(__dirname, 'lore/kara.txt'), 'utf-8'),
-    Arel: fs.readFileSync(path.join(__dirname, 'lore/arel.txt'), 'utf-8'),
-    Luxarith: fs.readFileSync(path.join(__dirname, 'lore/luxarith.txt'), 'utf-8'),
-    ArcanEnergy: fs.readFileSync(path.join(__dirname, 'lore/ArcanEnergy.txt'), 'utf-8'),
-    SigilOfDawn: fs.readFileSync(path.join(__dirname, 'lore/SigilOfDawn.txt'), 'utf-8'),
-    TheArcan: fs.readFileSync(path.join(__dirname, 'lore/TheArcan.txt'), 'utf-8')
+    Elias: loadLoreFile(path.join(__dirname, 'lore/Elias.txt')),
+    Kara: loadLoreFile(path.join(__dirname, 'lore/Kara.txt')),
+    Arel: loadLoreFile(path.join(__dirname, 'lore/Arel.txt')),
+    Luxarith: loadLoreFile(path.join(__dirname, 'lore/Luxarith.txt')),
+    ArcanEnergy: loadLoreFile(path.join(__dirname, 'lore/ArcanEnergy.txt')),
+    SigilOfDawn: loadLoreFile(path.join(__dirname, 'lore/SigilOfDawn.txt')),
+    TheArcan: loadLoreFile(path.join(__dirname, 'lore/TheArcanLedger.txt'))
 };
 
 // Define keywords to match user inputs to lore files
 const loreKeywords = {
-    Elias: ['elias', 'oracle', 'leader', 'guide','story', 'lore'],
-    Kara: ['kara', 'cipherist', 'cryptographer', 'decipher','story', 'lore'],
-    Arel: ['arel', 'keeper', 'guardian', 'light','story', 'lore'],
-    Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption','story', 'lore'],
-    ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow','story', 'lore'],
-    SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light''story', 'lore'],
+    Elias: ['elias', 'oracle', 'leader', 'guide', 'story', 'lore'],
+    Kara: ['kara', 'cipherist', 'cryptographer', 'decipher', 'story', 'lore'],
+    Arel: ['arel', 'keeper', 'guardian', 'light', 'story', 'lore'],
+    Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption', 'story', 'lore'],
+    ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow', 'story', 'lore'],
+    SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light', 'story', 'lore'],
     TheArcan: ['arcan', 'dimension', 'realm', 'ledger', 'environment', 'story', 'lore']
 };
 
