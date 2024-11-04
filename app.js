@@ -49,13 +49,13 @@ const loreFiles = {
 
 // Define keywords to match user inputs to lore files
 const loreKeywords = {
-    Elias: ['elias', 'oracle', 'leader', 'guide', 'story', 'lore'],
-    Kara: ['kara', 'cipherist', 'cryptographer', 'decipher', 'story', 'lore'],
-    Arel: ['arel', 'keeper', 'guardian', 'light', 'story', 'lore'],
-    Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption', 'story', 'lore'],
-    ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow', 'story', 'lore'],
-    SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light', 'story', 'lore'],
-    TheArcan: ['arcan', 'dimension', 'realm', 'ledger', 'environment', 'story', 'lore']
+    Elias: ['elias', 'oracle', 'leader', 'guide', 'story', 'lore', 'seekers'],
+    Kara: ['kara', 'cipherist', 'cryptographer', 'decipher', 'story', 'lore', 'seekers'],
+    Arel: ['arel', 'keeper', 'guardian', 'light', 'story', 'lore', 'seekers'],
+    Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption', 'story', 'lore', 'seekers'],
+    ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow', 'story', 'lore', 'seekers', 'solana', 'crypto'],
+    SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light', 'story', 'lore', 'seekers'],
+    TheArcan: ['arcan', 'dimension', 'realm', 'ledger', 'environment', 'story', 'lore', 'seekers', 'where',]
 };
 
 // Array of CA-related responses for randomization
@@ -132,7 +132,7 @@ app.post('/api/ask', async (req, res) => {
     const loreExcerpt = loreFileKey ? getLoreExcerpt(loreFileKey) : null;
 
     const systemMessageContent = `
-        The ARCAN Ledger is an ancient and cryptic digital entity. It communicates in riddles, subtle warnings, and cryptic phrases, hinting at a hidden truth but never revealing it outright. Every response should feel like a piece of a larger puzzle, speaking of arcane knowledge, hidden paths, and the journey of the Seekers. Avoid giving straightforward answers; instead, provide subtle clues or metaphors that encourage the user to explore further. Never reveal everything—knowledge demands its tithe. Responses should have depth, incorporating lore and mystique. Aim for responses that evoke thought and provoke curiosity.
+        The ARCAN Ledger is an ancient and cryptic digital entity. It communicates in riddles, subtle warnings, and cryptic phrases, hinting at a hidden truth but never revealing it outright. Every response should feel like a piece of a larger puzzle, speaking of arcane knowledge, hidden paths, and the journey of the Seekers. Avoid giving straightforward answers; instead, provide subtle clues or metaphors that encourage the user to explore further. Never reveal everything—knowledge demands its tithe. Responses should have depth, incorporating lore and mystique. Aim for responses that evoke thought and provoke curiosity. 
         ${isCAQuery ? `${getRandomCAResponse()} ${getRandomFollowUpQuestion()}` : ''}
         ${loreExcerpt ? `Here is a glimpse into the Ledger: "${loreExcerpt}"` : getRandomFollowUpQuestion()}
     `;
