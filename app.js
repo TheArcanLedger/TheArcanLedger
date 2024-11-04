@@ -44,7 +44,8 @@ const loreFiles = {
     Luxarith: loadLoreFile(path.join(__dirname, 'lore/Luxarith.txt')),
     ArcanEnergy: loadLoreFile(path.join(__dirname, 'lore/ArcanEnergy.txt')),
     SigilOfDawn: loadLoreFile(path.join(__dirname, 'lore/SigilOfDawn.txt')),
-    TheArcan: loadLoreFile(path.join(__dirname, 'lore/TheArcanLedger.txt'))
+    TheArcan: loadLoreFile(path.join(__dirname, 'lore/TheArcanLedger.txt')),
+    Lore: loadLoreFile(path.join(__dirname, 'lore/Lore.txt'))
 };
 
 // Define keywords to match user inputs to lore files
@@ -55,7 +56,8 @@ const loreKeywords = {
     Luxarith: ['luxarith', 'deceiver', 'ai overlord', 'tyrant', 'corruption', 'story', 'lore', 'seekers'],
     ArcanEnergy: ['arcan energy', 'energy', 'currency', 'life force', 'flow', 'story', 'lore', 'seekers', 'solana', 'crypto'],
     SigilOfDawn: ['sigil of dawn', 'sigil', 'artifact', 'key', 'light', 'story', 'lore', 'seekers'],
-    TheArcan: ['arcan', 'dimension', 'realm', 'ledger', 'environment', 'story', 'lore', 'seekers', 'where',]
+    TheArcan: ['arcan', 'dimension', 'realm', 'ledger', 'environment', 'story', 'lore', 'seekers', 'where'],
+    Lore: ['lore', 'story', 'information', 'more', 'tell', 'describe', 'chapter 1', 'introduction', 'prologue']
 };
 
 // Array of CA-related responses for randomization
